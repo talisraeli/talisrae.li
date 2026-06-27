@@ -1,0 +1,61 @@
+---
+import Icon from "../../../public/favicon.svg";
+import MenuBarItem from "./MenuBarItem.astro";
+---
+
+<header>
+    <div class="title-bar">
+        <Icon />
+        <h1>Tal Israeli's Portfolio</h1>
+    </div>
+    <div class="menu-bar">
+        <MenuBarItem name="View" dropdownButtons={[
+            {name: 'Toggle Theme'}, {name: 'Rickroll'}
+        ]}/>
+        <MenuBarItem name="Share" dropdownButtons={[
+            {name: 'X'}, {name: 'LinkedIn'}, {name: 'Facebook'}, {name: 'WhatsApp'}, {name: 'Copy URL'}, {name: 'Other...'}
+        ]}/>
+        <MenuBarItem name="Connect" dropdownButtons={[
+            {name: 'LinkedIn'}, {name: 'GitHub'}, {name: 'Send an Email'}
+        ]}/>
+        <MenuBarItem name="Help" dropdownButtons={[
+            {name: 'Terms of Services'}, {name: 'Privacy Policy'}, {name: 'Cookie Policy'}, "Divider", {name: 'GitHub Repository'}, {name: 'About'}
+        ]}/>
+    </div>
+</header>
+
+<style lang="scss">
+  header {
+    display: grid;
+
+    .title-bar {
+      background: var(--title-bar-bg);
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      svg {
+        height: 1.5rem;
+        margin-inline-start: -2px;
+        * {
+            fill: cornflowerblue !important;
+        }
+      }
+
+      h1 {
+        font-size: 1rem;
+        font-weight: 500;
+        margin: 0;
+      }
+    }
+
+    .menu-bar {
+      display: flex;
+      width: min-content;
+      padding-inline-start: 0.5rem;
+      cursor: default;
+      white-space: nowrap;
+    }
+  }
+</style>

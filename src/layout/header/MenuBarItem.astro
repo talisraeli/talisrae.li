@@ -1,0 +1,131 @@
+---
+interface Props {
+    name: string,
+    dropdownButtons?: (DropdownButton | "Divider")[]
+}
+
+interface DropdownButton {
+    name: string,
+    onClick: () => void
+}
+
+const props = Astro.props;
+---
+
+<details class="menu-bar-item">
+    <summary>{props.name}</summary>
+    <ul class="dropdown">
+        {props.dropdownButtons?.map(item => (
+            item === "Divider" ?
+                    <li><hr/></li> :
+                    <li>
+                        <button>
+                            {item.name}
+                        </button>
+                    </li>
+        ))}
+    </ul>
+</details>
+
+<script>
+    const menus = document.querySelectorAll('.menu-bar-item');
+    let anyOpen = false;
+
+    // Close menus when clicking outside
+    document.addEventListener('click', (e) => {
+        menus.forEach((menu) => {
+            menu.removeAttribute('open');
+        });
+        anyOpen = false;
+    });
+
+    // WPF Behavior: If one menu is open, hovering over another opens it instantly
+    menus.forEach((menu: HTMLDetailsElement) => {
+        menu.addEventListener('mouseenter', () => {
+            if (anyOpen) {
+                menus.forEach(m => m.removeAttribute('open'));
+                menu.setAttribute('open', '');
+            }
+        });
+
+        menu.addEventListener('toggle', e => {
+            anyOpen = e.newState === 'open';
+        })
+    });
+</script>
+
+<style lang="scss">
+  $btn-bg-hover: #e5f1fb;
+  $btn-border-hover: #0076d6;
+
+  .menu-bar-item {
+    position: relative;
+    color: var(--text-color);
+
+    summary {
+      border: 1px solid transparent;
+      font-size: 0.8rem;
+      padding: 0.2em 1em;
+
+      &::marker {
+        content: '';
+        display: none;
+      }
+
+      &:first-letter {
+        text-decoration: underline;
+      }
+    }
+
+    &[open] summary, summary:hover {
+      border: 1px solid $btn-border-hover;
+      background: $btn-bg-hover;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      list-style: none;
+      padding: 2px;
+      margin: 0;
+      background-color: var(--window-bg);
+      border: 1px solid var(--window-border);
+      white-space: nowrap;
+
+      li {
+        button {
+          width: 100%;
+          height: 100%;
+          appearance: none;
+          text-align: left;
+          border: 1px solid transparent;
+          background: transparent;
+          padding: 0.2em 1em;
+          font-size: 0.8rem;
+          color: var(--text-color);
+
+          &:first-letter {
+            text-decoration: underline;
+          }
+
+          &:hover {
+            border: 1px solid $btn-border-hover;
+            background: $btn-bg-hover;
+          }
+        }
+
+        hr {
+          margin-block: 0.2em;
+          border: none;
+          border-block-end: 1px solid var(--window-border);
+        }
+      }
+    }
+
+    &[open] .dropdown {
+      display: grid;
+    }
+  }
+</style>

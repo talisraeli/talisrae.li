@@ -1,0 +1,64 @@
+---
+import Header from "./header/Header.astro";
+---
+
+<html lang="en-US">
+<head>
+    <meta charset="utf-8"/>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+    <link rel="icon" href="/favicon.ico"/>
+    <meta name="viewport" content="width=device-width"/>
+    <meta name="generator" content={Astro.generator}/>
+    <title>Astro</title>
+</head>
+<body>
+<div class="window">
+    <Header/>
+</div>
+</body>
+</html>
+
+<style is:global>
+    :root {
+        --title-bar-bg: white;
+        --window-bg: #eeeef2;
+        --window-border: #ccc;
+        --text-color: #1f1f1f;
+    }
+</style>
+
+<style lang="scss">
+  $window-width: 800px;
+  $window-height: 650px;
+
+  $bg-color: #18181a;
+
+  body {
+    margin: 0;
+    height: 100vh;
+    background: $bg-color;
+    display: grid;
+    place-items: center;
+    font-size: 16px;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-color);
+  }
+
+  .window {
+    width: $window-width;
+    height: min($window-height, 100vh);
+    border-radius: 0.5rem;
+    background: var(--window-bg);
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    overflow: hidden;
+    box-shadow: 0 4px 16px 0 black;
+
+    @media screen and (max-width: $window-width) {
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+      box-shadow: none;
+    }
+  }
+</style>
