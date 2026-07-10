@@ -1,0 +1,124 @@
+---
+import {Tabs} from "./tabs.ts";
+interface Props {
+    activeTab: Tabs
+}
+
+const {activeTab} = Astro.props;
+---
+
+<div class="tab-panel">
+    <ul class="tab-menu">
+        <li class:list={[{
+            active: activeTab === Tabs.Home,
+            'no-right': activeTab === Tabs.Education
+        }]}>
+            <a href="/">Home</a>
+        </li>
+        <li class:list={[{
+            active: activeTab === Tabs.Education,
+            'no-left': activeTab === Tabs.Home,
+            'no-right': activeTab === Tabs.Projects
+        }]}>
+            <a href="/education">Education</a>
+        </li>
+        <li class:list={[{
+            active: activeTab === Tabs.Projects,
+            'no-left': activeTab === Tabs.Education,
+            'no-right': activeTab === Tabs.Contact
+        }]}>
+            <a href="/projects">Projects</a>
+        </li>
+        <li class:list={[{
+            active: activeTab === Tabs.Contact,
+            'no-left': activeTab === Tabs.Projects
+        }]}>
+            <a href="/contact">Contact</a>
+        </li>
+    </ul>
+    <div class="tab-content-wrapper">
+        <div class="tab-content">
+            <slot/>
+        </div>
+    </div>
+</div>
+
+<style lang="scss">
+  $btn-border-hover: #57b3ff;
+  $btn-bg-hover: linear-gradient(to bottom, #e5f1fb, #bde0ff);
+
+  .tab-panel {
+    margin: 0.5rem 1rem;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow: hidden;
+  }
+
+  .tab-menu {
+    list-style: none;
+    display: flex;
+    align-items: end;
+    padding: 0;
+    margin: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    transform: translateY(1px);
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    &:not(:has(:first-child.active)) {
+      padding-inline-start: 1px;
+    }
+
+    li {
+      a {
+        display: block;
+        padding: 0.6rem 1rem;
+        font: inherit;
+        border-radius: 0;
+        border: var(--tab-border) 1px solid;
+        border-block-end: none;
+        background: var(--tab-button-inactive-bg);
+        color: var(--text-color);
+        text-decoration: none;
+        transform: translateY(-1px);
+        cursor: default;
+      }
+
+      &.no-left a {
+        border-inline-start: none;
+      }
+
+      &.no-right a {
+        border-inline-end: none;
+      }
+
+      &:not(.active):hover a {
+        border-color: $btn-border-hover;
+        background: $btn-bg-hover;
+      }
+
+      &.active a {
+        background: var(--tab-bg);
+        padding: calc(0.6rem + 2px) calc(1rem + 2px);
+        border-block-end: none;
+        transform: translateY(0);
+        pointer-events: none;
+      }
+    }
+  }
+
+  .tab-content-wrapper {
+    background-color: var(--tab-bg);
+    border: 1px solid var(--tab-border);
+    display: grid;
+    overflow: hidden;
+
+    .tab-content {
+      padding: 1rem;
+      overflow-y: auto;
+    }
+  }
+</style>

@@ -1,6 +1,14 @@
 ---
 import Header from "./header/Header.astro";
+import TabPanel from "./tabs/TabPanel.astro";
 import Footer from "./Footer.astro";
+import type {Tabs} from "./tabs/tabs.ts";
+
+interface Props {
+	activeTab: Tabs
+}
+
+const {activeTab} = Astro.props;
 ---
 
 <html lang="en-US">
@@ -15,6 +23,11 @@ import Footer from "./Footer.astro";
 <body>
 <div class="window">
     <Header/>
+    <TabPanel activeTab={activeTab}>
+        <main>
+            <slot />
+        </main>
+    </TabPanel>
     <Footer/>
 </div>
 </body>
@@ -26,6 +39,9 @@ import Footer from "./Footer.astro";
         --window-bg: #eeeef2;
         --window-border: #ccc;
         --text-color: #1f1f1f;
+        --tab-bg: white;
+        --tab-button-inactive-bg: linear-gradient(to bottom, #f2f2f2, #e1e1e1);
+        --tab-border: #aaa;
     }
 </style>
 
