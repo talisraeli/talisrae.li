@@ -1,7 +1,63 @@
 ---
+import Picture from "astro/components/Picture.astro";
 import Layout from "../layout/Layout.astro";
+import {Tabs} from "../layout/tabs/tabs.ts";
+import profile from "./assets/profile.jpg";
 ---
 
-<Layout>
-
+<Layout activeTab={Tabs.Home}>
+    <fieldset>
+        <legend>About Me</legend>
+        <Picture src={profile}
+                 alt="profile picture"
+                 width={300}
+                 formats={["avif", "webp", "jpg"]}
+                 decoding="async"
+                 loading="lazy"/>
+        <p>
+            Hello there! 👋
+        </p>
+        <p>
+            My name is Tal, and I'm a software engineer from Israel, specializing in backend, cloud and distributed
+            systems.
+        </p>
+        <p>
+            Currently pursuing my B.Sc. in Software Engineering at the Technion, and with an academic background from
+            Weizmann Institute of Science, I pair a strong theoretical foundation with a passion for building
+            real-world software.
+        </p>
+        <p>
+            My expertise lies within the .NET ecosystem, where I focus on designing high-performance distributed
+            web applications using clean architecture and robust design patterns.
+        </p>
+        <p>
+            I thrive on solving complex backend challenges,
+            optimizing cloud infrastructure, and working with modern development tools.
+        </p>
+        <p>
+            Thanks for stopping by, and I hope you enjoy exploring my <span class="spell-warning"
+                                                                            title="Fix spelling: Did you mean &quot;The best portfolio you've ever seen&quot;?">portfolio</span>!
+        </p>
+    </fieldset>
 </Layout>
+
+<style lang="scss">
+  img {
+    width: 150px;
+    height: auto;
+    float: right;
+    margin: 0 1rem 1rem 2rem;
+    border: var(--tab-border) 2px solid;
+
+    @media screen and (max-width: 500px) {
+      float: none;
+      margin: 0 0 1rem;
+    }
+  }
+
+  .spell-warning {
+    text-decoration: underline;
+    text-decoration-style: wavy;
+    text-decoration-color: #008000;
+  }
+</style>
