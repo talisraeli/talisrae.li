@@ -5,7 +5,7 @@ import Footer from "./Footer.astro";
 import type {Tabs} from "./tabs/tabs.ts";
 
 interface Props {
-	activeTab: Tabs
+    activeTab: Tabs
 }
 
 const {activeTab} = Astro.props;
@@ -25,7 +25,7 @@ const {activeTab} = Astro.props;
     <Header/>
     <TabPanel activeTab={activeTab}>
         <main>
-            <slot />
+            <slot/>
         </main>
     </TabPanel>
     <Footer/>
