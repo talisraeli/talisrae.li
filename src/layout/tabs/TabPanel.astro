@@ -44,8 +44,7 @@ const {activeTab} = Astro.props;
 </div>
 
 <style lang="scss">
-  $btn-border-hover: #57b3ff;
-  $btn-bg-hover: linear-gradient(to bottom, #e5f1fb, #bde0ff);
+
 
   .tab-panel {
     margin: 0.5rem 1rem;
@@ -96,8 +95,8 @@ const {activeTab} = Astro.props;
       }
 
       &:not(.active):hover a {
-        border-color: $btn-border-hover;
-        background: $btn-bg-hover;
+        border-color: var(--tab-btn-border-hover);
+        background: var(--tab-btn-bg-hover);
       }
 
       &.active a {
