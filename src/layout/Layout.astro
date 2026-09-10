@@ -23,7 +23,11 @@ const { activeTab } = Astro.props;
         <!-- Apply saved theme before paint to prevent flash -->
         <script is:inline>
             (function () {
-                var theme = localStorage.getItem("theme") || "light";
+                const themeInLocalStorage = localStorage.getItem("theme");
+                const matchQueryList = window.matchMedia &&
+                    window.matchMedia("(prefers-color-scheme: light)");
+                const themeInMql = matchQueryList && matchQueryList.matches ? "light" : "dark";
+                const theme = themeInLocalStorage || themeInMql;
                 document.documentElement.setAttribute("data-theme", theme);
             })();
         </script>
