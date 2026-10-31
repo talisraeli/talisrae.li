@@ -3,15 +3,17 @@ import Picture from "astro/components/Picture.astro";
 import Layout from "../layout/Layout.astro";
 import {Tabs} from "../layout/tabs/tabs.ts";
 import profile from "./assets/profile.jpg";
+import Image from "astro/components/Image.astro";
 ---
 
 <Layout activeTab={Tabs.Home}>
     <fieldset>
         <legend>About Me</legend>
-        <Picture src={profile}
+        <Image src={profile}
                  alt="profile picture"
-                 width={300}
-                 formats={["avif", "webp", "jpg"]}
+                 width={250}
+                 format="jpg"
+                 quality="high"
                  decoding="async"
                  loading="lazy"/>
         <p>
