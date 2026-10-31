@@ -1,30 +1,34 @@
 ---
-import type { DropdownButtonData } from './menuBarData';
+import type {DropdownButtonData} from './menuBarData';
 
 interface Props {
-  name: string;
-  shortcutKey: string;
-  underlineIndex: number;
-  items: (DropdownButtonData | 'Divider')[];
+    name: string;
+    shortcutKey: string;
+    underlineIndex: number;
+    items: (DropdownButtonData | 'Divider')[];
 }
 
-const { name, shortcutKey, underlineIndex, items } = Astro.props;
+const {name, shortcutKey, underlineIndex, items} = Astro.props;
 const hasCheckboxes = items.some(item => item !== 'Divider' && item.type === 'checkbox');
 ---
 
 <details class="menu-bar-item" data-shortcut-key={shortcutKey}>
     <summary>
-        {name.slice(0, underlineIndex)}<span class="access-key">{name[underlineIndex]}</span>{name.slice(underlineIndex + 1)}
+        {name.slice(0, underlineIndex)}<span
+            class="access-key">{name[underlineIndex]}</span>{name.slice(underlineIndex + 1)}
     </summary>
-    <ul class:list={['dropdown', { 'has-checkboxes': hasCheckboxes }]}>
+    <ul class:list={['dropdown', {'has-checkboxes': hasCheckboxes}]}>
         {items.map(item => (
             item === 'Divider' ?
-                    <li><hr/></li> :
+                    <li>
+                        <hr/>
+                    </li> :
                     <li>
                         <button data-action={item.action} data-type={item.type || 'button'}>
                             {item.type === 'checkbox' && <span class="check-mark">✓</span>}
                             <span class="label">
-                                {item.name.slice(0, item.underlineIndex)}<span class="access-key">{item.name[item.underlineIndex]}</span>{item.name.slice(item.underlineIndex + 1)}
+                                {item.name.slice(0, item.underlineIndex)}<span
+                                    class="access-key">{item.name[item.underlineIndex]}</span>{item.name.slice(item.underlineIndex + 1)}
                             </span>
                             {item.shortcutLabel && <span class="shortcut-hint">{item.shortcutLabel}</span>}
                         </button>
