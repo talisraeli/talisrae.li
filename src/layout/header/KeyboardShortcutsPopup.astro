@@ -1,0 +1,99 @@
+---
+import PopupDialog from './PopupDialog.astro';
+import {menuBarData} from './menuBarData';
+---
+
+<PopupDialog id="shortcuts-dialog" title="Keyboard Shortcuts" width="420px">
+    <div class="shortcuts-content">
+        <section>
+            <h3>Menu Bar</h3>
+            <table>
+                <tbody>
+                {menuBarData.map(menu => (
+                        <tr>
+                            <td class="shortcut-key">Alt+{menu.shortcutKey.toUpperCase()}</td>
+                            <td>{menu.name}</td>
+                        </tr>
+                ))}
+                </tbody>
+            </table>
+        </section>
+
+        {menuBarData.map(menu => {
+            const buttons = menu.items.filter(item => item !== 'Divider') as typeof menu.items extends (infer T)[]
+                ? Exclude<T, 'Divider'>[] : never;
+                return (
+                <section>
+                    <h3>{menu.name} Menu</h3>
+                    <table>
+                        <tbody>
+                        {buttons.map(item => (
+                                <tr>
+                                    <td class="shortcut-key">{item.name[item.underlineIndex].toUpperCase()}</td>
+                                    <td>{item.name}</td>
+                                    <td class="global-hint">{item.shortcutLabel ?? ''}</td>
+                                </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </section>
+                );
+                })}
+
+                <p class="note">
+                    When a menu is open, press the underlined letter to activate an item.
+                </p>
+                </div>
+                </PopupDialog>
+
+                <style lang="scss">
+                  .shortcuts-content {
+                    font-size: 0.82rem;
+                    max-height: 400px;
+                    overflow-y: auto;
+
+                    section {
+                      margin-bottom: 1rem;
+
+                      h3 {
+                        font-size: 0.82rem;
+                        font-weight: 600;
+                        margin: 0 0 0.4rem;
+                        padding-bottom: 0.25rem;
+                        border-bottom: 1px solid var(--window-border);
+                      }
+                    }
+
+                    table {
+                      width: 100%;
+                      border-collapse: collapse;
+
+                      td {
+                        padding: 0.15rem 0.5rem;
+
+                        &.shortcut-key {
+                          font-family: 'Consolas', 'Courier New', monospace;
+                          font-size: 0.78rem;
+                          white-space: nowrap;
+                          width: 1%;
+                          color: var(--text-color);
+                          opacity: 0.8;
+                        }
+
+                        &.global-hint {
+                          text-align: right;
+                          font-family: 'Consolas', 'Courier New', monospace;
+                          font-size: 0.78rem;
+                          opacity: 0.6;
+                        }
+                      }
+                    }
+
+                    .note {
+                      font-size: 0.75rem;
+                      opacity: 0.7;
+                      margin: 0.5rem 0 0;
+                      font-style: italic;
+                    }
+                  }
+                </style>

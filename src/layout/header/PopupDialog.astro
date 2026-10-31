@@ -1,0 +1,97 @@
+---
+interface Props {
+    id: string;
+    title: string;
+    width?: string;
+}
+
+const {id, title, width = '400px'} = Astro.props;
+---
+
+<dialog id={id} class="wpf-dialog">
+    <div class="dialog-window" style={`width: ${width}`}>
+        <div class="dialog-title-bar">
+            <span class="dialog-title">{title}</span>
+            <button class="dialog-close" aria-label="Close">&times;</button>
+        </div>
+        <div class="dialog-content">
+            <slot/>
+        </div>
+    </div>
+</dialog>
+
+<script>
+    // Close dialog on close button click
+    document.querySelectorAll('.dialog-close').forEach(btn => {
+        btn.addEventListener('click', () => {
+            (btn.closest('dialog') as HTMLDialogElement)?.close();
+        });
+    });
+
+    // Close dialog on backdrop click
+    document.querySelectorAll('.wpf-dialog').forEach(dialog => {
+        dialog.addEventListener('click', (e) => {
+            if (e.target === dialog) {
+                (dialog as HTMLDialogElement).close();
+            }
+        });
+    });
+</script>
+
+<style lang="scss">
+  .wpf-dialog {
+    border: none;
+    padding: 0;
+    background: transparent;
+    max-width: 90vw;
+    max-height: 90vh;
+    color: var(--text-color);
+
+    &::backdrop {
+      background: rgba(0, 0, 0, 0.35);
+    }
+
+    .dialog-window {
+      background: var(--window-bg);
+      border: 1px solid var(--window-border);
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+
+    .dialog-title-bar {
+      background: var(--title-bar-bg);
+      padding: 0.4rem 0.5rem 0.4rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .dialog-title {
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .dialog-close {
+      appearance: none;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-color);
+      font-size: 1.3rem;
+      cursor: default;
+      padding: 0 0.6rem;
+      line-height: 1;
+      border-radius: 0.2rem;
+
+      &:hover {
+        background: #e81123;
+        color: white;
+        border-color: #e81123;
+      }
+    }
+
+    .dialog-content {
+      padding: 1.25rem 1.5rem;
+    }
+  }
+</style>
