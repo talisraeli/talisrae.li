@@ -5,7 +5,4 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   site: 'https://talisrae.li',
   trailingSlash: 'never',
-  build: {
-    format: 'file',
-  },
 });

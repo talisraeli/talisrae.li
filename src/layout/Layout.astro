@@ -32,7 +32,7 @@ const pageMeta: Record<Tabs, { title: string, description: string }> = {
 };
 
 const {title, description} = pageMeta[activeTab];
-const canonicalUrl = new URL(Astro.url.pathname.replace(/(index)?\.html$/, ""), Astro.site);
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 const ogImage = await getImage({src: profile, width: 600, format: "jpg"});
 ---
 
