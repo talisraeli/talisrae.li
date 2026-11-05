@@ -1,41 +1,64 @@
 ---
-import Picture from "astro/components/Picture.astro";
 import Layout from "../layout/Layout.astro";
 import {Tabs} from "../layout/tabs/tabs.ts";
 import profile from "./assets/profile.jpg";
 import Image from "astro/components/Image.astro";
+import GreenLightIcon from "./assets/green-light-icon.svg";
+
+const aboutRows = [
+    {label: "Focus", details: "Backend, cloud and distributed systems"},
+    {
+        label: "Expertise",
+        details: "High-performance distributed web applications in .NET, using clean architecture and robust design patterns",
+    },
+    {
+        label: "Background",
+        details: "A strong theoretical foundation from the Weizmann Institute of Science and my B.Sc. in progress at the Technion, paired with a passion for building real-world software",
+    },
+    {label: "Looking for", details: "An internship focused on backend or distributed cloud applications"},
+];
 ---
 
 <Layout activeTab={Tabs.Home}>
     <fieldset>
         <legend>About Me</legend>
-        <Image src={profile}
-               alt="profile picture"
-               width={250}
-               format="jpg"
-               quality="high"
-               decoding="async"
-               loading="lazy"/>
-        <p>
-            Hello there! 👋
-        </p>
-        <p>
-            My name is Tal, and I'm a software engineer from Israel, specializing in backend, cloud and distributed
-            systems.
-        </p>
-        <p>
-            Currently pursuing my B.Sc. in Software Engineering at the Technion, and with an academic background from
-            Weizmann Institute of Science, I pair a strong theoretical foundation with a passion for building
-            real-world software.
-        </p>
-        <p>
-            My expertise lies within the .NET ecosystem, where I focus on designing high-performance distributed
-            web applications using clean architecture and robust design patterns.
-        </p>
-        <p>
-            I thrive on solving complex backend challenges,
-            optimizing cloud infrastructure, and working with modern development tools.
-        </p>
+        <div class="profile">
+            <Image src={profile}
+                   alt="Portrait of Tal Israeli"
+                   width={300}
+                   format="jpg"
+                   quality="high"
+                   decoding="async"/>
+            <div>
+                <h1>Tal Israeli</h1>
+                <p class="role">Software Engineering Student @ Technion</p>
+                <dl>
+                    <dt>Location:</dt>
+                    <dd>Haifa, Israel</dd>
+                    <dt>GPA:</dt>
+                    <dd>91.4 / 100</dd>
+                    <dt>Status:</dt>
+                    <dd><span class="status"><GreenLightIcon width={16} height={16} viewBox="-10 -10 252.33508 252.33508" aria-hidden="true"/>Open to internships</span></dd>
+                </dl>
+                <div class="actions">
+                    <a class="button default" href="/contact">Get in touch</a>
+                    <a class="button" href="https://github.com/talisraeli" target="_blank" rel="noopener">GitHub</a>
+                    <a class="button" href="https://www.linkedin.com/in/talisraeli/" target="_blank"
+                       rel="noopener">LinkedIn</a>
+                </div>
+            </div>
+        </div>
+        <p>I'm a software engineer from Israel who builds cloud-native web applications.</p>
+        <table>
+            <tbody>
+            {aboutRows.map(row => (
+                    <tr>
+                        <th scope="row">{row.label}</th>
+                        <td>{row.details}</td>
+                    </tr>
+            ))}
+            </tbody>
+        </table>
         <p>
             Thanks for stopping by, and I hope you enjoy exploring my <span class="spell-warning"
                                                                             title="Fix spelling: Did you mean &quot;The best portfolio you've ever seen&quot;?">portfolio</span>!
@@ -44,16 +67,124 @@ import Image from "astro/components/Image.astro";
 </Layout>
 
 <style lang="scss">
-  img {
-    width: 150px;
-    height: auto;
-    float: right;
-    margin: 0 1rem 1rem 2rem;
-    border: var(--tab-border) 2px solid;
+  .profile {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-block-end: 1rem;
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin: 0;
+      text-transform: uppercase;
+    }
+
+    img {
+      flex-shrink: 0;
+      width: 13rem;
+      height: auto;
+      border: var(--tab-border) 2px solid;
+    }
 
     @media screen and (max-width: 500px) {
-      float: none;
-      margin: 0 0 1rem;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  .role {
+    margin-block-end: 0.5rem;
+  }
+
+  dl {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.25rem 1rem;
+    margin: 0 0 1rem;
+
+    dt {
+      font-weight: 500;
+    }
+
+    dd {
+      margin: 0;
+
+      .status {
+        color: green;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+
+        @media (prefers-reduced-motion: no-preference) {
+          :global(svg) {
+            animation: green-light-pulse 2.5s ease-in-out infinite;
+          }
+        }
+      }
+    }
+  }
+
+  @keyframes green-light-pulse {
+    0%,
+    100% {
+      filter: drop-shadow(0 0 1.5px rgb(25 240 0 / 0.6));
+    }
+    50% {
+      filter: drop-shadow(0 0 3.5px rgb(25 240 0 / 0.8));
+    }
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .button {
+    min-width: 5rem;
+    padding: 0.2rem 0.75rem;
+    box-sizing: border-box;
+    border: var(--tab-border) 1px solid;
+    background: var(--tab-button-inactive-bg);
+    color: var(--text-color);
+    font-size: 0.9rem;
+    text-align: center;
+    text-decoration: none;
+    cursor: default;
+
+    &.default {
+      border-color: var(--menu-btn-border-hover);
+    }
+
+    &:hover {
+      border-color: var(--tab-btn-border-hover);
+      background: var(--tab-btn-bg-hover);
+    }
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border: var(--window-border) 1px solid;
+    font-size: 0.9rem;
+
+    th,
+    td {
+      padding: 0.2rem 0.5rem;
+      border: var(--window-border) 1px solid;
+      text-align: start;
+    }
+
+    th {
+      background: var(--tab-button-inactive-bg);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    tbody tr:hover {
+      background: var(--menu-btn-bg-hover);
     }
   }
 
