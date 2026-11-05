@@ -2,13 +2,38 @@
 import Header from "./header/Header.astro";
 import TabPanel from "./tabs/TabPanel.astro";
 import Footer from "./Footer.astro";
-import type {Tabs} from "./tabs/tabs.ts";
+import {Tabs} from "./tabs/tabs.ts";
+import {getImage} from "astro:assets";
+import profile from "../pages/assets/profile.jpg";
 
 interface Props {
     activeTab: Tabs;
 }
 
 const {activeTab} = Astro.props;
+
+const pageMeta: Record<Tabs, { title: string, description: string }> = {
+    [Tabs.Home]: {
+        title: "Tal Israeli — Software Engineering Student",
+        description: "Tal Israeli is a Software Engineering Student at the Technion, specializing in backend, cloud and distributed systems.",
+    },
+    [Tabs.Education]: {
+        title: "Education — Tal Israeli",
+        description: "Tal Israeli's academic background: a B.Sc. in Software Engineering at the Technion, and a Computer Science program at the Weizmann Institute of Science.",
+    },
+    [Tabs.Projects]: {
+        title: "Projects — Tal Israeli",
+        description: "Software projects by Tal Israeli, a software engineer focused on backend, cloud and distributed systems.",
+    },
+    [Tabs.Contact]: {
+        title: "Contact — Tal Israeli",
+        description: "Get in touch with Tal Israeli by email, LinkedIn, GitHub or X.",
+    },
+};
+
+const {title, description} = pageMeta[activeTab];
+const canonicalUrl = new URL(Astro.url.pathname.replace(/(index)?\.html$/, ""), Astro.site);
+const ogImage = await getImage({src: profile, width: 600, format: "jpg"});
 ---
 
 <html lang="en-US">
@@ -18,7 +43,21 @@ const {activeTab} = Astro.props;
     <link rel="icon" href="/favicon.ico"/>
     <meta name="viewport" content="width=device-width"/>
     <meta name="generator" content={Astro.generator}/>
-    <title>Tal Israeli &mdash; Software Engineering Student</title>
+    <title>{title}</title>
+    <meta name="description" content={description}/>
+    <link rel="canonical" href={canonicalUrl}/>
+
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="Tal Israeli's Portfolio"/>
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:title" content={title}/>
+    <meta property="og:description" content={description}/>
+    <meta property="og:url" content={canonicalUrl}/>
+    <meta property="og:image" content={new URL(ogImage.src, Astro.site)}/>
+    <meta property="og:image:width" content={ogImage.attributes.width}/>
+    <meta property="og:image:height" content={ogImage.attributes.height}/>
+    <meta property="og:image:alt" content="Portrait of Tal Israeli"/>
+    <meta name="twitter:card" content="summary"/>
 
     <!-- Apply saved theme before paint to prevent flash -->
     <script is:inline>
