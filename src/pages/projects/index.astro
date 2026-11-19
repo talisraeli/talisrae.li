@@ -4,7 +4,9 @@ import {Tabs} from "../../layout/tabs/tabs.ts";
 import Image from "astro/components/Image.astro";
 import {getCollection} from "astro:content";
 
-const projects = await getCollection("projects");
+// Newest first. Periods start with a four-digit year, so comparing them as strings orders them by start year.
+const projects = (await getCollection("projects"))
+    .sort((a, b) => b.data.period.localeCompare(a.data.period));
 ---
 
 <Layout activeTab={Tabs.Projects}>
