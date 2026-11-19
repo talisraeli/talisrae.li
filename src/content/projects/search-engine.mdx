@@ -1,0 +1,115 @@
+---
+title: Web Search Engine
+description: >-
+  A full-text web search engine Tal Israeli built with .NET Core, Entity Framework Core and SQL Server: a concurrent web
+  crawler, an inverted index and an ASP.NET Core search website, deployed on AWS.
+summary: >-
+  A full-text web search engine with a concurrent web crawler, an inverted index in SQL Server and an ASP.NET Core
+  search website, built as the final project of the Weizmann Institute of Science's Computer Science program.
+period: 2018–2020
+technologies:
+  - C#
+  - .NET Core
+  - ASP.NET Core
+  - Entity Framework Core
+  - SQL Server
+  - AWS
+intro: >-
+  A full-text web search engine made up of a concurrent web crawler, an inverted index in SQL Server and an ASP.NET Core
+  search website. I designed and built it independently as the final project of my external high-school diploma, for
+  the Davidson Institute of Science Education, the educational arm of the Weizmann Institute of Science, mentored by a
+  Ph.D. lecturer in Industrial Engineering. I submitted it in June 2020.
+cover: ../../pages/assets/search-engine-presentation.png
+coverAlt: The search website on a tablet, showing results for the query React
+details:
+  - area: Web crawler
+    details: >-
+      Concurrent asynchronous workers with domain-based priority scheduling, URL canonicalization and deduplication.
+  - area: Database
+    details: >-
+      A SQL Server schema of six tables (the crawl frontier, domains, the document index, document metadata, terms and
+      the term-to-document inverted index), generated code-first by Entity Framework Core.
+  - area: Search website
+    details: >-
+      An ASP.NET Core application that stems each query with the Porter algorithm and ranks matching documents by their
+      aggregated term weights.
+  - area: Scope
+    details: >-
+      Full-text search over webpages in any language. Images, videos, news, PDF files and spam filtering are out of
+      scope.
+  - area: Technologies
+    details: >-
+      C#, .NET Core 3.1, ASP.NET Core 3.1, Entity Framework Core 3.1, LINQ, SQL Server 2019, Html Agility Pack,
+      Porter Stemmer, CSS.
+  - area: Deployment
+    details: Amazon Web Services (AWS), with Amazon EC2 hosting the crawler and the website, and Amazon RDS hosting the database.
+sourceCode: https://github.com/talisraeli/search-engine
+---
+
+import Figure from "../../components/Figure.astro";
+import ProjectDetails from "../../components/ProjectDetails.astro";
+import useCase from "../../pages/assets/search-engine-use-case.jpg";
+import devices from "../../pages/assets/search-engine-devices.png";
+
+### Background
+
+Search engines are among the most widely used software systems, and I wanted to understand how one works end to end by
+building it myself. My goals were to learn an unfamiliar technology stack, design a system larger than anything I had
+built before, and deliver something people could actually use. My research drew on books and articles on information
+retrieval, particularly
+<a href="https://www.cambridge.org/highereducation/books/introduction-to-information-retrieval/669D108D20F556C5C30957D63B5AB65C" target="_blank" rel="noopener"><cite>Introduction to Information Retrieval</cite></a>
+by Manning, Raghavan and Schütze (Cambridge University Press, 2008). Production search engines combine dozens of
+specialized technologies, so I scoped the project to the foundational architecture that early search engines were built
+on.
+
+### Architecture
+
+The system is a .NET solution of three projects: a shared data-access library (`SearchEngine.Data`), a web crawler
+(`SearchEngine.WebCrawler`) and a search website (`SearchEngine.SearchWebsite`). The crawler and the website run as
+independent processes with no dependency on each other. Both reference the data library, which encapsulates the Entity
+Framework Core model and all database access, so persistence logic is written once and shared. This separation of
+concerns keeps each component focused and lets the crawler and the website run and be deployed independently.
+
+<Figure src={useCase}
+        alt="Use-case diagram of a client's HTTP GET request passing through the search website and data classes on the server, and the HTTP response back"
+        caption="The use-case diagram I designed for the project."/>
+
+### Crawling and Indexing
+
+The crawler runs a configurable number of concurrent, asynchronous workers. Each worker repeats this pipeline:
+
+1. **Scheduling:** takes the next URL from the crawl frontier, which groups queued URLs by domain. The worker chooses
+   between high-priority and regular domains with equal probability, so manually curated, reliable domains are crawled
+   more often and are better represented in the index. The URL is dequeued immediately to prevent duplicate crawls.
+2. **Fetching and parsing:** downloads the page and parses its HTML with Html Agility Pack.
+3. **Metadata extraction:** extracts the title and the meta description, falling back to the first paragraph, and adds
+   the page to the document index.
+4. **Link extraction:** resolves relative links to absolute URLs and canonicalizes them, so that `https://google.com`
+   and `https://google.com/` resolve to the same page. New URLs are deduplicated against the index and the frontier,
+   then enqueued with their domain.
+5. **Term weighting:** concurrently with the next crawl, stems each word on the page with the Porter stemmer, so
+   "engine" and "engines" map to the same term, and weights it by its position (such as a heading, a paragraph or bold
+   text) and its frequency.
+
+The term weights are stored in an inverted index, a table that maps each stemmed term to the pages it appears on and its
+weight on each. This lets the search website look up candidate pages by term instead of scanning every page.
+
+### Query Processing
+
+Each query arrives as an HTTP GET request handled by ASP.NET Core. The query is normalized with the same stemmer used
+at indexing time, matching pages are retrieved from the inverted index, and the results are ranked by their aggregated
+term weights. The results page reports the total number of matches and the server processing time, and paginates the
+results.
+
+### Challenges
+
+I deliberately chose Entity Framework Core and LINQ over the hand-written SQL I was used to, adopting a code-first
+approach in which the database schema is generated from the C# domain model. The crawler was the most demanding
+component, requiring substantial code and extensive debugging, which I worked through with documentation and community
+resources such as Stack Overflow.
+
+<ProjectDetails details={frontmatter.details}/>
+
+<Figure src={devices}
+        alt="The search website on a phone, a tablet and a laptop"
+        caption="The search website across multiple devices."/>
