@@ -1,7 +1,7 @@
 ---
-import Layout from "../layout/Layout.astro";
-import { Tabs } from "../layout/tabs/tabs.ts";
-import profile from "./assets/profile.jpg";
+import Layout from "../layouts/Layout.astro";
+import { Tabs } from "../layouts/tabs/tabs.ts";
+import profile from "../assets/profile.jpg";
 import Image from "astro/components/Image.astro";
 import GreenLight from "../components/GreenLight.astro";
 
@@ -17,7 +17,10 @@ const aboutRows = [
     details:
       "A strong theoretical foundation from the Weizmann Institute of Science and my B.Sc. in progress at the Technion, paired with a passion for building real-world software",
   },
-  { label: "Looking for", details: "An internship focused on backend or distributed cloud applications" },
+  {
+    label: "Looking for",
+    details: "An internship focused on backend or distributed cloud applications",
+  },
 ];
 ---
 
