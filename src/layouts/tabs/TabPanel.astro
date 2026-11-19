@@ -1,51 +1,65 @@
 ---
-import {Tabs} from "./tabs.ts";
+import { Tabs } from "./tabs.ts";
 interface Props {
-    activeTab: Tabs
+  activeTab: Tabs;
 }
 
-const {activeTab} = Astro.props;
+const { activeTab } = Astro.props;
 ---
 
 <div class="tab-panel">
-    <ul class="tab-menu">
-        <li class:list={[{
-            active: activeTab === Tabs.Home,
-            'no-right': activeTab === Tabs.Education
-        }]}>
-            <a href="/">Home</a>
-        </li>
-        <li class:list={[{
-            active: activeTab === Tabs.Education,
-            'no-left': activeTab === Tabs.Home,
-            'no-right': activeTab === Tabs.Projects
-        }]}>
-            <a href="/education">Education</a>
-        </li>
-        <li class:list={[{
-            active: activeTab === Tabs.Projects,
-            'no-left': activeTab === Tabs.Education,
-            'no-right': activeTab === Tabs.Contact
-        }]}>
-            <a href="/projects">Projects</a>
-        </li>
-        <li class:list={[{
-            active: activeTab === Tabs.Contact,
-            'no-left': activeTab === Tabs.Projects
-        }]}>
-            <a href="/contact">Contact</a>
-        </li>
-    </ul>
-    <div class="tab-content-wrapper">
-        <div class="tab-content">
-            <slot/>
-        </div>
+  <ul class="tab-menu">
+    <li
+      class:list={[
+        {
+          active: activeTab === Tabs.Home,
+          "no-right": activeTab === Tabs.Education,
+        },
+      ]}
+    >
+      <a href="/">Home</a>
+    </li>
+    <li
+      class:list={[
+        {
+          active: activeTab === Tabs.Education,
+          "no-left": activeTab === Tabs.Home,
+          "no-right": activeTab === Tabs.Projects,
+        },
+      ]}
+    >
+      <a href="/education">Education</a>
+    </li>
+    <li
+      class:list={[
+        {
+          active: activeTab === Tabs.Projects,
+          "no-left": activeTab === Tabs.Education,
+          "no-right": activeTab === Tabs.Contact,
+        },
+      ]}
+    >
+      <a href="/projects">Projects</a>
+    </li>
+    <li
+      class:list={[
+        {
+          active: activeTab === Tabs.Contact,
+          "no-left": activeTab === Tabs.Projects,
+        },
+      ]}
+    >
+      <a href="/contact">Contact</a>
+    </li>
+  </ul>
+  <div class="tab-content-wrapper">
+    <div class="tab-content">
+      <slot />
     </div>
+  </div>
 </div>
 
 <style lang="scss">
-
-
   .tab-panel {
     margin: 0.5rem 1rem;
     display: grid;

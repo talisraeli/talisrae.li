@@ -1,100 +1,122 @@
 ---
-import Layout from "../layout/Layout.astro";
-import {Tabs} from "../layout/tabs/tabs.ts";
-import profile from "./assets/profile.jpg";
+import Layout from "../layouts/Layout.astro";
+import { Tabs } from "../layouts/tabs/tabs.ts";
+import profile from "../assets/profile.jpg";
 import Image from "astro/components/Image.astro";
 import GreenLight from "../components/GreenLight.astro";
 
 const aboutRows = [
-    {label: "Focus", details: "Backend, cloud and distributed systems"},
-    {
-        label: "Expertise",
-        details: "High-performance distributed web applications in .NET, using clean architecture and robust design patterns",
-    },
-    {
-        label: "Background",
-        details: "A strong theoretical foundation from the Weizmann Institute of Science and my B.Sc. in progress at the Technion, paired with a passion for building real-world software",
-    },
-    {label: "Looking for", details: "An internship focused on backend or distributed cloud applications"},
+  { label: "Focus", details: "Backend, cloud and distributed systems" },
+  {
+    label: "Expertise",
+    details:
+      "High-performance distributed web applications in .NET, using clean architecture and robust design patterns",
+  },
+  {
+    label: "Background",
+    details:
+      "A strong theoretical foundation from the Weizmann Institute of Science and my B.Sc. in progress at the Technion, paired with a passion for building real-world software",
+  },
+  {
+    label: "Looking for",
+    details: "An internship focused on backend or distributed cloud applications",
+  },
 ];
 ---
 
 <Layout activeTab={Tabs.Home}>
-    <fieldset>
-        <legend>About Me</legend>
-        <div class="profile">
-            <Image src={profile}
-                   alt="Portrait of Tal Israeli"
-                   width={300}
-                   format="jpg"
-                   quality="high"
-                   decoding="async"/>
-            <div>
-                <h1>Tal Israeli</h1>
-                <p class="role">Software Engineering Student @ Technion</p>
-                <dl>
-                    <dt>Location:</dt>
-                    <dd>Haifa, Israel</dd>
-                    <dt>GPA:</dt>
-                    <dd>91.4 / 100</dd>
-                    <dt>Status:</dt>
-                    <dd><span class="status"><GreenLight/>Open to internships</span></dd>
-                </dl>
-                <div class="actions">
-                    <a class="button default" href="/contact">Get in touch</a>
-                    <a class="button" href="https://github.com/talisraeli" target="_blank" rel="noopener">GitHub</a>
-                    <a class="button" href="https://www.linkedin.com/in/talisraeli/" target="_blank"
-                       rel="noopener">LinkedIn</a>
-                </div>
-            </div>
+  <fieldset>
+    <legend>About Me</legend>
+    <div class="profile">
+      <Image src={profile} alt="Portrait of Tal Israeli" width={300} format="jpg" quality="high" decoding="async" />
+      <div>
+        <h1>Tal Israeli</h1>
+        <p class="role">Software Engineering Student @ Technion</p>
+        <dl>
+          <dt>Location:</dt>
+          <dd>Haifa, Israel</dd>
+          <dt>GPA:</dt>
+          <dd>91.4 / 100</dd>
+          <dt>Status:</dt>
+          <dd>
+            <span class="status">
+              <GreenLight />
+              Open to internships
+            </span>
+          </dd>
+        </dl>
+        <div class="actions">
+          <a class="button default" href="/contact">
+            Get in touch
+          </a>
+          <a class="button" href="https://github.com/talisraeli" target="_blank" rel="noopener">
+            GitHub
+          </a>
+          <a class="button" href="https://www.linkedin.com/in/talisraeli/" target="_blank" rel="noopener">
+            LinkedIn
+          </a>
         </div>
-        <p>I'm a software engineer from Israel who builds cloud-native web applications.</p>
-        <table>
-            <tbody>
-            {aboutRows.map(row => (
-                    <tr>
-                        <th scope="row">{row.label}</th>
-                        <td>{row.details}</td>
-                    </tr>
-            ))}
-            </tbody>
-        </table>
-        <p class="closing">
-            Thanks for stopping by, and I hope you enjoy exploring <span class="fix-target">my <span class="spell-warning" tabindex="0"
-                                                                                               aria-describedby="spell-tooltip">portfolio<span
-                id="spell-tooltip" role="tooltip">
-                <code>(noun) <span class="keyword">string</span> portfolio</code>
-                <span class="message">
-                    <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
-                        <path fill="#e8a317" d="M8 1 15.5 15H.5z"/>
-                        <path fill="#1f1f1f" d="M7.25 6h1.5v5h-1.5zM7.25 12h1.5v1.5h-1.5z"/>
-                    </svg>
-                    <span><span class="rule">SPELL0001:</span> Did you mean &ldquo;The best portfolio you've ever seen&rdquo;?</span>
-                </span>
-                <button class="fixes" type="button">Show potential fixes (Alt+Enter)</button>
-            </span></span></span>!
-        </p>
-    </fieldset>
+      </div>
+    </div>
+    <p>I'm a software engineer from Israel who builds cloud-native web applications.</p>
+    <table>
+      <tbody>
+        {aboutRows.map((row) => (
+          <tr>
+            <th scope="row">{row.label}</th>
+            <td>{row.details}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <p class="closing">
+      Thanks for stopping by, and I hope you enjoy exploring{" "}
+      <span class="fix-target">
+        my{" "}
+        <span class="spell-warning" tabindex="0" aria-describedby="spell-tooltip">
+          portfolio
+          <span id="spell-tooltip" role="tooltip">
+            <code>
+              (noun) <span class="keyword">string</span> portfolio
+            </code>
+            <span class="message">
+              <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+                <path fill="#e8a317" d="M8 1 15.5 15H.5z" />
+                <path fill="#1f1f1f" d="M7.25 6h1.5v5h-1.5zM7.25 12h1.5v1.5h-1.5z" />
+              </svg>
+              <span>
+                <span class="rule">SPELL0001:</span> Did you mean &ldquo;The best portfolio you've ever seen&rdquo;?
+              </span>
+            </span>
+            <button class="fixes" type="button">
+              Show potential fixes (Alt+Enter)
+            </button>
+          </span>
+        </span>
+      </span>
+      !
+    </p>
+  </fieldset>
 </Layout>
 
 <script>
-    const fixTarget = document.querySelector<HTMLElement>('.fix-target');
-    const spellWarning = fixTarget?.querySelector('.spell-warning');
+  const fixTarget = document.querySelector<HTMLElement>(".fix-target");
+  const spellWarning = fixTarget?.querySelector(".spell-warning");
 
-    const applyFix = () => {
-        if (!fixTarget) return;
-        fixTarget.textContent = "the best portfolio you've ever seen";
-        fixTarget.classList.add('fixed');
-    };
+  const applyFix = () => {
+    if (!fixTarget) return;
+    fixTarget.textContent = "the best portfolio you've ever seen";
+    fixTarget.classList.add("fixed");
+  };
 
-    spellWarning?.querySelector('.fixes')?.addEventListener('click', applyFix);
+  spellWarning?.querySelector(".fixes")?.addEventListener("click", applyFix);
 
-    document.addEventListener('keydown', (e) => {
-        if (e.altKey && e.key === 'Enter' && spellWarning?.matches(':hover, :focus-within')) {
-            e.preventDefault();
-            applyFix();
-        }
-    });
+  document.addEventListener("keydown", (e) => {
+    if (e.altKey && e.key === "Enter" && spellWarning?.matches(":hover, :focus-within")) {
+      e.preventDefault();
+      applyFix();
+    }
+  });
 </script>
 
 <style lang="scss">

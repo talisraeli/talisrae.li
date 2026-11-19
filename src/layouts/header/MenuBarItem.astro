@@ -1,0 +1,241 @@
+---
+import type { DropdownButtonData } from "./menuBarData";
+
+interface Props {
+  name: string;
+  shortcutKey: string;
+  underlineIndex: number;
+  items: (DropdownButtonData | "Divider")[];
+}
+
+const { name, shortcutKey, underlineIndex, items } = Astro.props;
+const hasCheckboxes = items.some((item) => item !== "Divider" && item.type === "checkbox");
+---
+
+<details class="menu-bar-item" data-shortcut-key={shortcutKey}>
+  <summary>
+    {name.slice(0, underlineIndex)}
+    <span class="access-key">{name[underlineIndex]}</span>
+    {name.slice(underlineIndex + 1)}
+  </summary>
+  <ul class:list={["dropdown", { "has-checkboxes": hasCheckboxes }]}>
+    {items.map((item) =>
+      item === "Divider" ? (
+        <li>
+          <hr />
+        </li>
+      ) : (
+        <li>
+          <button data-action={item.action} data-type={item.type || "button"}>
+            {item.type === "checkbox" && <span class="check-mark">✓</span>}
+            <span class="label">
+              {item.name.slice(0, item.underlineIndex)}
+              <span class="access-key">{item.name[item.underlineIndex]}</span>
+              {item.name.slice(item.underlineIndex + 1)}
+            </span>
+            {item.shortcutLabel && <span class="shortcut-hint">{item.shortcutLabel}</span>}
+          </button>
+        </li>
+      ),
+    )}
+  </ul>
+</details>
+
+<script>
+  const menus = document.querySelectorAll(".menu-bar-item") as NodeListOf<HTMLDetailsElement>;
+  let anyOpen = false;
+
+  // Close menus when clicking outside
+  document.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement;
+    if (!target.closest(".menu-bar-item")) {
+      menus.forEach((menu) => {
+        menu.removeAttribute("open");
+      });
+      anyOpen = false;
+    }
+  });
+
+  // WPF Behavior: If one menu is open, hovering over another opens it instantly
+  menus.forEach((menu) => {
+    menu.addEventListener("mouseenter", () => {
+      if (anyOpen) {
+        menus.forEach((m) => m.removeAttribute("open"));
+        menu.setAttribute("open", "");
+      }
+    });
+
+    menu.addEventListener("toggle", (e) => {
+      anyOpen = (e as ToggleEvent).newState === "open";
+    });
+  });
+
+  // Close menu when a dropdown button is clicked
+  document.querySelectorAll(".dropdown button").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      menus.forEach((m) => m.removeAttribute("open"));
+      anyOpen = false;
+    });
+  });
+
+  // Keyboard navigation
+  document.addEventListener("keydown", (e) => {
+    // Don't handle menu shortcuts when a dialog is open
+    if (document.querySelector("dialog[open]")) return;
+
+    // Alt+letter to open menus
+    if (e.altKey && !e.ctrlKey && !e.shiftKey) {
+      const key = e.key.toLowerCase();
+      menus.forEach((menu) => {
+        if (menu.dataset.shortcutKey === key) {
+          e.preventDefault();
+          menus.forEach((m) => m.removeAttribute("open"));
+          menu.setAttribute("open", "");
+          anyOpen = true;
+        }
+      });
+    }
+
+    // When a menu is open, pressing a letter activates the corresponding item
+    if (anyOpen && !e.altKey && !e.ctrlKey && !e.shiftKey && e.key.length === 1) {
+      const openMenu = document.querySelector(".menu-bar-item[open]");
+      if (openMenu) {
+        const key = e.key.toLowerCase();
+        const buttons = openMenu.querySelectorAll(".dropdown button");
+        for (const btn of buttons) {
+          const accessKey = btn.querySelector(".access-key");
+          if (accessKey && accessKey.textContent?.toLowerCase() === key) {
+            e.preventDefault();
+            (btn as HTMLButtonElement).click();
+            break;
+          }
+        }
+      }
+    }
+
+    // Escape to close menus
+    if (e.key === "Escape" && anyOpen) {
+      menus.forEach((m) => m.removeAttribute("open"));
+      anyOpen = false;
+    }
+
+    // Arrow left/right to navigate between menus when open
+    if (anyOpen && (e.key === "ArrowRight" || e.key === "ArrowLeft")) {
+      const menuArray = Array.from(menus);
+      const openIndex = menuArray.findIndex((m) => m.hasAttribute("open"));
+      if (openIndex !== -1) {
+        e.preventDefault();
+        menus.forEach((m) => m.removeAttribute("open"));
+        const next =
+          e.key === "ArrowRight"
+            ? (openIndex + 1) % menuArray.length
+            : (openIndex - 1 + menuArray.length) % menuArray.length;
+        menuArray[next].setAttribute("open", "");
+      }
+    }
+  });
+</script>
+
+<style lang="scss">
+  .menu-bar-item {
+    position: relative;
+    color: var(--text-color);
+
+    summary {
+      border: 1px solid transparent;
+      font-size: 0.8rem;
+      padding: 0.2em 1em;
+
+      &::marker {
+        content: "";
+        display: none;
+      }
+
+      .access-key {
+        text-decoration: underline;
+      }
+    }
+
+    &[open] summary,
+    summary:hover {
+      border: 1px solid var(--menu-btn-border-hover);
+      background: var(--menu-btn-bg-hover);
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      list-style: none;
+      padding: 2px;
+      margin: 0;
+      background-color: var(--window-bg);
+      border: 1px solid var(--window-border);
+      white-space: nowrap;
+      z-index: 1;
+
+      li {
+        button {
+          width: 100%;
+          height: 100%;
+          appearance: none;
+          text-align: left;
+          border: 1px solid transparent;
+          background: transparent;
+          padding: 0.2em 1em;
+          font-size: 0.8rem;
+          color: var(--text-color);
+          display: flex;
+          align-items: center;
+          gap: 0.5em;
+          cursor: default;
+          position: relative;
+
+          .access-key {
+            text-decoration: underline;
+          }
+
+          .label {
+            flex: 1;
+          }
+
+          .check-mark {
+            width: 1em;
+            text-align: center;
+            visibility: hidden;
+          }
+
+          &[data-checked] .check-mark {
+            visibility: visible;
+          }
+
+          .shortcut-hint {
+            margin-inline-start: 2em;
+            font-size: 0.75rem;
+            opacity: 0.6;
+          }
+
+          &:hover {
+            border: 1px solid var(--menu-btn-border-hover);
+            background: var(--menu-btn-bg-hover);
+          }
+        }
+
+        hr {
+          margin-block: 0.2em;
+          border: none;
+          border-block-end: 1px solid var(--window-border);
+        }
+      }
+
+      &.has-checkboxes button {
+        padding-inline-start: 0.3em;
+      }
+    }
+
+    &[open] .dropdown {
+      display: grid;
+    }
+  }
+</style>

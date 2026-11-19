@@ -1,36 +1,39 @@
 ---
-import PopupDialog from './PopupDialog.astro';
-import Icon from '../../../public/favicon.svg';
+import PopupDialog from "./PopupDialog.astro";
+import Icon from "../../../public/favicon.svg";
 
 const year = new Date().getFullYear();
-const version = '0.0.1';
+const version = "0.0.1";
 ---
 
 <PopupDialog id="about-dialog" title="About" width="380px">
-    <div class="about-content">
-        <div class="about-header">
-            <Icon/>
-            <div class="about-info">
-                <h2>Tal Israeli's Portfolio</h2>
-                <p class="version">Version {version}</p>
-            </div>
-        </div>
-
-        <p class="description">
-            A personal portfolio website with a design inspired by the
-            Windows Presentation Foundation (WPF) desktop application aesthetic.
-            Built with <a href="https://astro.build" target="_blank" rel="noopener">Astro</a>.
-        </p>
-
-        <div class="about-footer">
-            <p>&copy; {year} Tal Israeli</p>
-            <p>
-                <a href="https://github.com/talisraeli/talisrae.li" target="_blank" rel="noopener">
-                    github.com/talisraeli/talisrae.li
-                </a>
-            </p>
-        </div>
+  <div class="about-content">
+    <div class="about-header">
+      <Icon />
+      <div class="about-info">
+        <h2>Tal Israeli's Portfolio</h2>
+        <p class="version">Version {version}</p>
+      </div>
     </div>
+
+    <p class="description">
+      A personal portfolio website with a design inspired by the Windows Presentation Foundation (WPF) desktop
+      application aesthetic. Built with{" "}
+      <a href="https://astro.build" target="_blank" rel="noopener">
+        Astro
+      </a>
+      .
+    </p>
+
+    <div class="about-footer">
+      <p>&copy; {year} Tal Israeli</p>
+      <p>
+        <a href="https://github.com/talisraeli/talisrae.li" target="_blank" rel="noopener">
+          github.com/talisraeli/talisrae.li
+        </a>
+      </p>
+    </div>
+  </div>
 </PopupDialog>
 
 <style lang="scss">

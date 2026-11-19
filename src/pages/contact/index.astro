@@ -1,22 +1,42 @@
 ---
-import Layout from "../../layout/Layout.astro";
-import {Tabs} from "../../layout/tabs/tabs.ts";
+import Layout from "../../layouts/Layout.astro";
+import { Tabs } from "../../layouts/tabs/tabs.ts";
 ---
 
 <Layout activeTab={Tabs.Contact}>
-    <p>Looking forward to our next conversation!</p>
-    <ul>
-        <li>
-            <p>Email: <a href="mailto:contact@talisrae.li" target="_blank">contact@talisrae.li</a></p>
-        </li>
-        <li>
-            <p>LinkedIn: <a href="https://www.linkedin.com/in/talisraeli/" target="_blank">/in/talisraeli</a></p>
-        </li>
-        <li>
-            <p>GitHub: <a href="https://github.com/talisraeli" target="_blank">@talisraeli</a></p>
-        </li>
-        <li>
-            <p>X (Twitter): <a href="https://x.com/talisraeli_" target="_blank">@talisraeli_</a></p>
-        </li>
-    </ul>
+  <p>Looking forward to our next conversation!</p>
+  <ul>
+    <li>
+      <p>
+        Email:{" "}
+        <a href="mailto:contact@talisrae.li" target="_blank">
+          contact@talisrae.li
+        </a>
+      </p>
+    </li>
+    <li>
+      <p>
+        LinkedIn:{" "}
+        <a href="https://www.linkedin.com/in/talisraeli/" target="_blank">
+          /in/talisraeli
+        </a>
+      </p>
+    </li>
+    <li>
+      <p>
+        GitHub:{" "}
+        <a href="https://github.com/talisraeli" target="_blank">
+          @talisraeli
+        </a>
+      </p>
+    </li>
+    <li>
+      <p>
+        X (Twitter):{" "}
+        <a href="https://x.com/talisraeli_" target="_blank">
+          @talisraeli_
+        </a>
+      </p>
+    </li>
+  </ul>
 </Layout>

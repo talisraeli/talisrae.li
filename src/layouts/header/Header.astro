@@ -1,0 +1,169 @@
+---
+import Icon from "../../../public/favicon.svg";
+import MenuBarItem from "./MenuBarItem.astro";
+import KeyboardShortcutsPopup from "./KeyboardShortcutsPopup.astro";
+import AboutPopup from "./AboutPopup.astro";
+import { menuBarData } from "./menuBarData";
+---
+
+<header>
+  <div class="title-bar">
+    <Icon />
+    <h1>Tal Israeli's Portfolio</h1>
+  </div>
+  <div class="menu-bar">
+    {menuBarData.map((menu) => (
+      <MenuBarItem
+        name={menu.name}
+        shortcutKey={menu.shortcutKey}
+        underlineIndex={menu.underlineIndex}
+        items={menu.items}
+      />
+    ))}
+  </div>
+</header>
+
+<!-- Popup dialogs -->
+<KeyboardShortcutsPopup />
+<AboutPopup />
+
+<script>
+  const SITE_URL = "https://talisrae.li";
+
+  // --- Theme management ---
+  function setTheme(theme: string) {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+    updateThemeCheckmarks(theme);
+  }
+
+  function updateThemeCheckmarks(theme: string) {
+    document.querySelectorAll<HTMLButtonElement>('[data-action="theme-light"]').forEach((btn) => {
+      if (theme === "light") btn.setAttribute("data-checked", "");
+      else btn.removeAttribute("data-checked");
+    });
+    document.querySelectorAll<HTMLButtonElement>('[data-action="theme-dark"]').forEach((btn) => {
+      if (theme === "dark") btn.setAttribute("data-checked", "");
+      else btn.removeAttribute("data-checked");
+    });
+  }
+
+  // Initialize theme checkmarks on load
+  const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
+  updateThemeCheckmarks(currentTheme);
+
+  // --- Rickroll ---
+  function rickroll() {
+    const win = document.querySelector(".window") as HTMLElement | null;
+    if (win && !win.classList.contains("rickrolled")) {
+      win.classList.add("rickrolled");
+      win.addEventListener(
+        "animationend",
+        () => {
+          win.classList.remove("rickrolled");
+        },
+        { once: true },
+      );
+    }
+  }
+
+  // --- Action handlers ---
+  const actions: Record<string, () => void> = {
+    "theme-light": () => setTheme("light"),
+    "theme-dark": () => setTheme("dark"),
+    rickroll: rickroll,
+
+    "share-x": () => window.open(`https://x.com/intent/tweet?url=${encodeURIComponent(SITE_URL)}`, "_blank"),
+    "share-linkedin": () =>
+      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(SITE_URL)}`, "_blank"),
+    "share-facebook": () =>
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(SITE_URL)}`, "_blank"),
+    "share-whatsapp": () => window.open(`https://wa.me/?text=${encodeURIComponent(SITE_URL)}`, "_blank"),
+    "share-copy": () => {
+      navigator.clipboard.writeText(SITE_URL);
+    },
+    "share-other": () => {
+      if (navigator.share) {
+        navigator.share({ url: SITE_URL, title: "Tal Israeli's Portfolio" });
+      }
+    },
+
+    "connect-email": () => window.open("mailto:contact@talisrae.li", "_blank"),
+    "connect-linkedin": () => window.open("https://www.linkedin.com/in/talisraeli/", "_blank"),
+    "connect-github": () => window.open("https://github.com/talisraeli", "_blank"),
+    "connect-x": () => window.open("https://x.com/talisraeli_", "_blank"),
+
+    "help-terms": () => {},
+    "help-privacy": () => {},
+    "help-cookies": () => {},
+    "help-github": () => window.open("https://github.com/talisraeli/talisrae.li", "_blank"),
+    "help-shortcuts": () => (document.getElementById("shortcuts-dialog") as HTMLDialogElement)?.showModal(),
+    "help-about": () => (document.getElementById("about-dialog") as HTMLDialogElement)?.showModal(),
+  };
+
+  // Handle button clicks via event delegation
+  document.addEventListener("click", (e) => {
+    const btn = (e.target as HTMLElement).closest("[data-action]") as HTMLElement | null;
+    if (btn) {
+      const action = btn.dataset.action;
+      if (action && actions[action]) {
+        actions[action]();
+      }
+    }
+  });
+
+  // Global keyboard shortcuts
+  document.addEventListener("keydown", (e) => {
+    // Don't handle global shortcuts when a dialog is open
+    if (document.querySelector("dialog[open]")) return;
+
+    // Ctrl+Shift+C → Copy URL
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "c") {
+      e.preventDefault();
+      actions["share-copy"]();
+    }
+
+    // F1 → Keyboard Shortcuts
+    if (e.key === "F1") {
+      e.preventDefault();
+      actions["help-shortcuts"]();
+    }
+  });
+</script>
+
+<style lang="scss">
+  header {
+    display: grid;
+
+    .title-bar {
+      background: var(--title-bar-bg);
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      svg {
+        height: 1.5rem;
+        margin-inline-start: -2px;
+
+        * {
+          fill: cornflowerblue !important;
+        }
+      }
+
+      h1 {
+        font-size: 1rem;
+        font-weight: 500;
+        margin: 0;
+      }
+    }
+
+    .menu-bar {
+      display: flex;
+      width: min-content;
+      padding-inline-start: 0.5rem;
+      cursor: default;
+      white-space: nowrap;
+    }
+  }
+</style>
