@@ -3,11 +3,12 @@ import Layout from "../../layout/Layout.astro";
 import {Tabs} from "../../layout/tabs/tabs.ts";
 import TechnionLogo from "../assets/technion-logo.svg";
 import WeizmannLogo from "../assets/weizmann-logo.svg";
+import GreenLight from "../../components/GreenLight.astro";
 
 const courses = [
     {name: "Intro. to Computer Science", grade: "100"},
     {name: "Intro. to Systems Programming", grade: "95"},
-    {name: "Data Structures 1", grade: "In progress"},
+    {name: "Data Structures 1", grade: "In progress", inProgress: true},
 ];
 ---
 
@@ -40,7 +41,11 @@ const courses = [
             {courses.map(course => (
                     <tr>
                         <td>{course.name}</td>
-                        <td>{course.grade}</td>
+                        <td>
+                            {course.inProgress
+                                ? <span class="in-progress"><GreenLight/>{course.grade}</span>
+                                : course.grade}
+                        </td>
                     </tr>
             ))}
             </tbody>
@@ -181,6 +186,12 @@ const courses = [
 
     tbody tr:hover {
       background: var(--menu-btn-bg-hover);
+    }
+
+    .in-progress {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
     }
   }
 </style>
