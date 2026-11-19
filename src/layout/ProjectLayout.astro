@@ -87,6 +87,35 @@ const {title, description, intro, cover, coverAlt, sourceCode} = project.data;
       margin: 0.25rem 0 0;
       padding-inline-start: 1.25rem;
     }
+
+    // Like the WPF ToolTip in the Aero theme: a white to blue-gray gradient with a gray border, slightly rounded
+    // corners, dark-gray text and an offset drop shadow, with the source in bold at the end, aligned right.
+    :global(blockquote) {
+      margin: 0.75rem 0.4rem 0.9rem 0;
+      padding: 0.3rem 0.5rem;
+      border: #767676 1px solid;
+      border-radius: 3px;
+      background: linear-gradient(to bottom, #ffffff, #e4e5f0);
+      color: #575757;
+      box-shadow: 3px 3px 5px rgb(0 0 0 / 0.35);
+    }
+
+    :global(blockquote p) {
+      line-height: 1.6;
+    }
+
+    :global(blockquote footer) {
+      margin-block-start: 0.25rem;
+      font-weight: 600;
+      text-align: end;
+    }
+  }
+
+  :global([data-theme="dark"]) .content :global(blockquote) {
+    border-color: #5f5f66;
+    background: linear-gradient(to bottom, #46464b, #333337);
+    color: var(--text-color);
+    box-shadow: 3px 3px 5px rgb(0 0 0 / 0.6);
   }
 
   .actions {

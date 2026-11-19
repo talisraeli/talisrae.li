@@ -1,0 +1,201 @@
+---
+title: Someone to Argue With
+description: >-
+  A cloud-native social platform Tal Israeli built with ASP.NET Core, SignalR, React and Microsoft Azure, which paired
+  anonymous strangers from opposite sides of a debate for live text and video conversations. It served over 26,000 daily
+  users and 4,000 concurrent connections.
+summary: >-
+  A cloud-native social platform that paired anonymous strangers from opposite sides of a debate for live text and video
+  conversations. It went viral during Israel's 2022 elections, serving over 26,000 daily users and 4,000 concurrent
+  connections.
+period: 2022–2023
+technologies:
+  - C#
+  - ASP.NET Core
+  - SignalR
+  - WebRTC
+  - SQL Server
+  - React
+  - TypeScript
+  - Azure
+intro: >-
+  A social platform that builds on the idea of Chatroulette, a chat between complete strangers, with a twist: users
+  choose the side they belong to, and the system pairs them with someone from the opposing side for an anonymous text or
+  video debate. I relaunched a 2014 website of the same name for Israel's November 2022 elections, when it went viral and
+  was covered by national and international media, and expanded it beyond politics in 2023. At its peak, it served over 26,000 daily users and 4,000
+  concurrent connections. The platform operated until it was taken down in 2023.
+cover: ../../pages/assets/someone-to-argue-with-presentation.png
+coverAlt: A conversation between two users on a laptop
+details:
+  - area: Scale
+    details: >-
+      Over 26,000 daily unique users, 4,000 concurrent real-time connections and 1,000,000 database records in
+      production. Over 60,000 users and 180,000 conversations during the week of the 2022 Knesset elections.
+  - area: Matchmaking
+    details: >-
+      Per-topic waitlists with their own pairing rules, such as opposing political sides or rival soccer teams, falling
+      back to the same side after 10 to 20 seconds.
+  - area: Communication
+    details: >-
+      Text chat with GIFs, emojis and typing indicators over SignalR, and peer-to-peer video chat over WebRTC. Ended
+      conversations can be viewed and shared.
+  - area: Moderation
+    details: >-
+      In-browser AI detection of explicit video, user reports in nine categories, a role-based administration panel for
+      reviewing reports, and IP blocking.
+  - area: Topics
+    details: Politics at launch, expanded in 2023 to soccer and religion.
+  - area: Platforms
+    details: >-
+      A Progressive Web App (PWA) for the web, desktop and mobile from a single code base, also published on Google
+      Play.
+  - area: Technologies
+    details: >-
+      C#, ASP.NET Core, SignalR, Entity Framework Core, ASP.NET Core Identity, SQL Server, React, TypeScript, Redux
+      Toolkit, Redux Persist, PeerJS (WebRTC), TensorFlow.js (NsfwSpy), Vite, Sass, Figma.
+  - area: Deployment
+    details: >-
+      Microsoft Azure (App Service, Static Web Apps and Azure SQL Database), with CI/CD pipelines in GitHub Actions and
+      dependency updates by Dependabot.
+---
+
+import Figure from "../../components/Figure.astro";
+import ProjectDetails from "../../components/ProjectDetails.astro";
+import chat from "../../pages/assets/someone-to-argue-with-chat.png";
+import homePage from "../../pages/assets/someone-to-argue-with-home-page.png";
+import devices from "../../pages/assets/someone-to-argue-with-devices.png";
+
+### Background
+
+The platform is based on
+<a href="https://www.haaretz.co.il/captain/net/2014-08-11/ty-article/0000017f-e061-d38f-a57f-e6736bb10000" target="_blank" rel="noopener">"Someone to Argue With 2014"</a>,
+a website created by Eyal and Asaf Geva after Operation Protective Edge. It brought together people from both sides of
+the political spectrum and gave them an anonymous platform to express their views.
+
+### The 2022 Elections
+
+Ahead of the November 2022 Knesset elections, Israel's fifth in three and a half years, I relaunched the website as an
+outlet for voters frustrated by yet another election campaign. I redesigned the user experience to modern standards and
+introduced new features, such as viewing and sharing conversations after they ended.
+
+The website went viral in the days leading up to the elections. During election week, it recorded over 60,000 users and
+180,000 conversations between right-wing and left-wing users, and it was featured by leading news outlets in Israel and
+abroad.
+
+<Figure src={chat}
+        alt="A Hebrew chat between a right-winger and a left-winger, each message labeled with the sender's side"
+        caption="A conversation between two users before the 2022 elections."/>
+
+### Expansion and Rebranding
+
+In 2023, I released a new and expanded version in partnership with Jonathan Rashi. I led research and development,
+while Jonathan led research and design. The platform was rebranded and redesigned, expanded beyond politics to soccer and
+religion, and given richer user profiles: each user chooses a nickname, a gender, an avatar and a side within their
+chosen topic. The new version also introduced live video chat and AI-based content moderation.
+
+<Figure src={homePage}
+        alt="The redesigned home page, with an avatar next to fields for a nickname, a text or video conversation, a gender and a topic, and a Google Play badge"
+        caption="The home page after the 2023 rebranding."/>
+
+### Architecture
+
+The platform consists of an ASP.NET Core backend and a React frontend. The backend exposes a SignalR hub for each
+topic, all derived from a single generic chat hub, so each new topic required only its own roles and matchmaking rules.
+Conversations are stored in SQL Server through Entity Framework Core, and a REST API serves shared conversations and
+user reports. The frontend is a Progressive Web App written in TypeScript, with its state managed by Redux Toolkit and
+persisted on the client by Redux Persist, which allowed a single code base to serve the web, desktop and mobile. It was
+packaged for Android as a Trusted Web Activity and published on Google Play.
+
+The backend ran on Azure App Service, the frontend on Azure Static Web Apps and the database on Azure SQL Database, with
+deployments by GitHub Actions pipelines. I applied the SOLID principles throughout and used Dependabot to keep dependencies up to date.
+
+### Matchmaking
+
+Each topic has its own matchmaker, which holds a waitlist of users looking for a conversation and evaluates it every
+second, and each applies its own pairing rules. In politics and religion, a user is paired with the first available user
+from an opposing side, prioritizing the larger opposing group so that the waitlists stay balanced. In soccer, a user is
+paired with a supporter of a rival team in the same league. If no opponent is found in time (20 seconds for politics,
+15 for religion and 10 for soccer), the user is paired with someone from the same side instead of waiting indefinitely.
+When a pair is formed, both users join a dedicated SignalR group and the conversation is saved to the database.
+
+### Real-Time Chat
+
+Messages, GIFs and typing indicators are delivered instantly through SignalR. To keep conversations civil and the server
+stable, the hub enforces rate limits, caps message length, normalizes whitespace and accepts GIFs only from Tenor. When
+either user leaves, the conversation is closed and its full history is persisted, so it can later be viewed and shared
+through a unique link.
+
+### Video Chat
+
+Video conversations are peer-to-peer: the camera and microphone streams travel between the two browsers over WebRTC,
+using PeerJS, so the platform's own servers never carry video traffic. Once a match is formed, each browser registers
+with PeerJS and sends its peer ID to the other user through the match's SignalR group, and the other browser then
+places the call. When the tab is hidden, the opponent's video automatically switches to
+picture-in-picture, so the debate continues while the user browses elsewhere.
+
+### Moderation and Safety
+
+Anonymous video chat with strangers requires strong safeguards, so moderation was built into the platform in several
+layers:
+
+1. **Automatic detection:** an AI model (NsfwSpy, running on TensorFlow.js) classifies a frame of the opponent's video
+   twice per second, entirely in the browser. When explicit content is detected repeatedly with high confidence, the
+   video is blurred immediately and an automatic report with the offending frame is filed.
+2. **User reports:** users can report their opponent in one of nine categories, such as harassment, spam or privacy
+   invasion, with additional details.
+3. **Administration panel:** a role-based panel, secured with ASP.NET Core Identity and optional two-factor
+   authentication, lets moderators review each report alongside the conversation and any captured frame, and resolve,
+   dismiss or reopen it.
+4. **Enforcement:** connections from blocked IP addresses are rejected by the chat hubs before they can be matched with
+   anyone.
+
+### In the Press
+
+<blockquote>
+  <p>
+    So, a guy named Tal Israeli built a website called "Someone to Argue With" that allows you to have a conversation
+    with someone on the other side and conduct an anonymous discussion. I think this is the most genius thing I've seen
+    lately. I highly recommend trying it!
+  </p>
+  <footer>
+    &mdash; Rafa Goichman, <a href="https://www.themarker.com/captain-internet/2022-10-31/ty-article/.premium/00000184-2eaf-d8ca-a3ff-bfffffa50000" target="_blank" rel="noopener"><cite>TheMarker</cite></a>
+  </footer>
+</blockquote>
+
+<blockquote>
+  <p>
+    If you are politically active, you have something to say, and you don't know to whom, we have found the ultimate app
+    for you. \[...] It may sound like curiosity, but this is an addictive app.
+  </p>
+  <footer>
+    &mdash; <a href="https://www.kipa.co.il/%D7%98%D7%9B%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94/1144459-0/" target="_blank" rel="noopener"><cite>Kipa News</cite></a>
+  </footer>
+</blockquote>
+
+<blockquote>
+  <p>
+    You have to choose which side you are on &mdash; right or left &mdash; then a chat will open for you and a user
+    from the opposite side will join you. From here &mdash; the correspondence is in your hands.
+  </p>
+  <footer>
+    &mdash; Dana Guterzon, <a href="https://www.mako.co.il/nexter-news/Article-841ed8bdb4e2481027.htm" target="_blank" rel="noopener"><cite>mako</cite></a>
+  </footer>
+</blockquote>
+
+<blockquote>
+  <p>
+    The networks have gone crazy when they found out about the existence of "Someone to Argue With", an application in
+    which conflict is sought directly.
+  </p>
+  <footer>
+    &mdash; David Sánchez de Castro, <a href="https://web.archive.org/web/20221101112322/https:/www.abc.es/tecnologia/moviles/aplicaciones/mishu-tinder-gente-quiere-discutir-20221101114954-nt.html" target="_blank" rel="noopener"><cite>ABC News</cite></a> (Spain)
+  </footer>
+</blockquote>
+
+The quotes are translated from Hebrew and Spanish.
+
+<ProjectDetails details={frontmatter.details}/>
+
+<Figure src={devices}
+        alt="The website on a phone, a tablet and a laptop"
+        caption="A single code base across phones, tablets and computers."/>
