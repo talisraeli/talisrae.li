@@ -1,0 +1,53 @@
+---
+interface Props {
+    details: { area: string, details: string }[];
+}
+
+const {details} = Astro.props;
+---
+
+<table>
+    <caption>Project Details</caption>
+    <tbody>
+    {details.map(detail => (
+            <tr>
+                <th scope="row">{detail.area}</th>
+                <td>{detail.details}</td>
+            </tr>
+    ))}
+    </tbody>
+</table>
+
+<style lang="scss">
+  table {
+    margin-block-start: 1rem;
+    width: 100%;
+    border-collapse: collapse;
+    border: var(--window-border) 1px solid;
+    font-size: 0.9rem;
+
+    caption {
+      text-align: start;
+      font-weight: 500;
+      padding-block-end: 0.25rem;
+    }
+
+    th,
+    td {
+      padding: 0.2rem 0.5rem;
+      border: var(--window-border) 1px solid;
+      text-align: start;
+    }
+
+    th {
+      background: var(--tab-button-inactive-bg);
+      font-weight: 500;
+      white-space: nowrap;
+      vertical-align: top;
+    }
+
+    tbody tr:hover {
+      background: var(--menu-btn-bg-hover);
+    }
+  }
+</style>

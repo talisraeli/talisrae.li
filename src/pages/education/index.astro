@@ -43,7 +43,7 @@ const courses = [
                         <td>{course.name}</td>
                         <td>
                             {course.inProgress
-                                ? <span class="in-progress"><GreenLight/>{course.grade}</span>
+                                ? <span class="in-progress"><GreenLight size={12}/>{course.grade}</span>
                                 : course.grade}
                         </td>
                     </tr>
@@ -66,29 +66,12 @@ const courses = [
             <dt>Final Grade:</dt>
             <dd>100 / 100</dd>
         </dl>
-        <h3>Final Project: Web Search Engine</h3>
         <p>
-            A text-based web search engine I built independently for the Davidson Institute of Science Education, the
-            educational arm of the Weizmann Institute, as the final project of my external high-school diploma, mentored
-            by a Ph.D. Industrial Engineering lecturer.
+            The program introduces participants to research and development in computer science, software engineering
+            and computer engineering, exploring both their academic and practical applications. It focuses on leading
+            disciplines in the industry, including artificial intelligence, cryptography, machine learning, smartphone
+            simulations, websites, robotics, Big Data and game theory.
         </p>
-        <ul>
-            <li>
-                <strong>Web crawler:</strong> extracts page metadata, scores keywords by their dominance on each page,
-                and queues linked pages, crawling hand-picked reliable domains more often.
-            </li>
-            <li>
-                <strong>Search website:</strong> handles queries with ASP.NET Core and ranks results by keyword score,
-                using the Porter stemming algorithm to match words by their root form.
-            </li>
-            <li>
-                <strong>Technologies:</strong> .NET Core, Entity Framework Core, SQL Server, Html Agility Pack.
-            </li>
-            <li>
-                <strong>Deployment:</strong> Amazon Web Services (AWS), with EC2 for the crawler and website and RDS for
-                the database.
-            </li>
-        </ul>
     </fieldset>
 </Layout>
 
@@ -141,22 +124,6 @@ const courses = [
 
     dd {
       margin: 0;
-    }
-  }
-
-  h3 {
-    font-size: 1rem;
-    font-weight: 500;
-    margin: 0 0 0.25rem;
-  }
-
-  ul {
-    line-height: 1.6;
-    margin: 0;
-    padding-inline-start: 1.25rem;
-
-    strong {
-      font-weight: 500;
     }
   }
 
