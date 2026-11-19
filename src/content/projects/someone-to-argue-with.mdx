@@ -21,8 +21,8 @@ technologies:
 intro: >-
   A social platform that builds on the idea of Chatroulette, a chat between complete strangers, with a twist: users
   choose the side they belong to, and the system pairs them with someone from the opposing side for an anonymous text or
-  video debate. I relaunched it for Israel's November 2022 elections, when it went viral and was covered by national and
-  international media, and expanded it beyond politics in 2023. At its peak, it served over 26,000 daily users and 4,000
+  video debate. I relaunched a 2014 website of the same name for Israel's November 2022 elections, when it went viral and
+  was covered by national and international media, and expanded it beyond politics in 2023. At its peak, it served over 26,000 daily users and 4,000
   concurrent connections. The platform operated until it was taken down in 2023.
 cover: ../../pages/assets/someone-to-argue-with-presentation.png
 coverAlt: A conversation between two users on a laptop
@@ -33,8 +33,8 @@ details:
       production. Over 60,000 users and 180,000 conversations during the week of the 2022 Knesset elections.
   - area: Matchmaking
     details: >-
-      Per-topic waitlists that pair users with the opposing side, prioritizing the larger opposing group and falling
-      back to the same side after 20 seconds.
+      Per-topic waitlists with their own pairing rules, such as opposing political sides or rival soccer teams, falling
+      back to the same side after 10 to 20 seconds.
   - area: Communication
     details: >-
       Text chat with GIFs, emojis and typing indicators over SignalR, and peer-to-peer video chat over WebRTC. Ended
@@ -52,11 +52,11 @@ details:
   - area: Technologies
     details: >-
       C#, ASP.NET Core, SignalR, Entity Framework Core, ASP.NET Core Identity, SQL Server, React, TypeScript, Redux
-      Toolkit, PeerJS (WebRTC), TensorFlow.js (NsfwSpy), Vite, Sass, Figma.
+      Toolkit, Redux Persist, PeerJS (WebRTC), TensorFlow.js (NsfwSpy), Vite, Sass, Figma.
   - area: Deployment
     details: >-
-      Microsoft Azure (App Service and Static Web Apps), with CI/CD pipelines in GitHub Actions and dependency updates
-      by Dependabot.
+      Microsoft Azure (App Service, Static Web Apps and Azure SQL Database), with CI/CD pipelines in GitHub Actions and
+      dependency updates by Dependabot.
 ---
 
 import Figure from "../../components/Figure.astro";
@@ -91,11 +91,10 @@ abroad.
 In 2023, I released a new and expanded version in partnership with Jonathan Rashi. I led research and development,
 while Jonathan led research and design. The platform was rebranded and redesigned, expanded beyond politics to soccer and
 religion, and given richer user profiles: each user chooses a nickname, a gender, an avatar and a side within their
-chosen topic. The new version also introduced live video chat, AI-based content moderation and a mobile app on Google
-Play.
+chosen topic. The new version also introduced live video chat and AI-based content moderation.
 
 <Figure src={homePage}
-        alt="The redesigned home page, with an avatar next to fields for a nickname, a gender and a topic"
+        alt="The redesigned home page, with an avatar next to fields for a nickname, a text or video conversation, a gender and a topic, and a Google Play badge"
         caption="The home page after the 2023 rebranding."/>
 
 ### Architecture
@@ -107,16 +106,17 @@ user reports. The frontend is a Progressive Web App written in TypeScript, with 
 persisted on the client by Redux Persist, which allowed a single code base to serve the web, desktop and mobile. It was
 packaged for Android as a Trusted Web Activity and published on Google Play.
 
-The backend ran on Azure App Service and the frontend on Azure Static Web Apps, both deployed by GitHub Actions
-pipelines. I applied the SOLID principles throughout and used Dependabot to keep dependencies up to date.
+The backend ran on Azure App Service, the frontend on Azure Static Web Apps and the database on Azure SQL Database, with
+deployments by GitHub Actions pipelines. I applied the SOLID principles throughout and used Dependabot to keep dependencies up to date.
 
 ### Matchmaking
 
 Each topic has its own matchmaker, which holds a waitlist of users looking for a conversation and evaluates it every
-second. A user is paired with the first available user from an opposing side, prioritizing the larger opposing group so
-that the waitlists stay balanced. If no opponent is found within 20 seconds, the user is paired with someone from the
-same side instead of waiting indefinitely. When a pair is formed, both users join a dedicated SignalR group and the
-conversation is saved to the database.
+second, and each applies its own pairing rules. In politics and religion, a user is paired with the first available user
+from an opposing side, prioritizing the larger opposing group so that the waitlists stay balanced. In soccer, a user is
+paired with a supporter of a rival team in the same league. If no opponent is found in time (20 seconds for politics,
+15 for religion and 10 for soccer), the user is paired with someone from the same side instead of waiting indefinitely.
+When a pair is formed, both users join a dedicated SignalR group and the conversation is saved to the database.
 
 ### Real-Time Chat
 
@@ -127,10 +127,10 @@ through a unique link.
 
 ### Video Chat
 
-Video conversations are peer-to-peer: the camera and microphone streams travel directly between the two browsers over
-WebRTC, using PeerJS, so the server never handles video traffic. SignalR acts as the signaling channel. Once a match is
-formed, each browser registers a peer and announces its ID to the other user through the match's SignalR group, and the
-other browser then places the call. When the tab is hidden, the opponent's video automatically switches to
+Video conversations are peer-to-peer: the camera and microphone streams travel between the two browsers over WebRTC,
+using PeerJS, so the platform's own servers never carry video traffic. Once a match is formed, each browser registers
+with PeerJS and sends its peer ID to the other user through the match's SignalR group, and the other browser then
+places the call. When the tab is hidden, the opponent's video automatically switches to
 picture-in-picture, so the debate continues while the user browses elsewhere.
 
 ### Moderation and Safety
@@ -153,12 +153,12 @@ layers:
 
 <blockquote>
   <p>
-    So, a guy named Tal Israeli built a website called "Someone to Argue With", that allows you to have a conversation
+    So, a guy named Tal Israeli built a website called "Someone to Argue With" that allows you to have a conversation
     with someone on the other side and conduct an anonymous discussion. I think this is the most genius thing I've seen
     lately. I highly recommend trying it!
   </p>
   <footer>
-    &mdash; <a href="https://www.themarker.com/captain-internet/2022-10-31/ty-article/.premium/00000184-2eaf-d8ca-a3ff-bfffffa50000" target="_blank" rel="noopener"><cite>TheMarker</cite></a>, Rafa Goichman
+    &mdash; Rafa Goichman, <a href="https://www.themarker.com/captain-internet/2022-10-31/ty-article/.premium/00000184-2eaf-d8ca-a3ff-bfffffa50000" target="_blank" rel="noopener"><cite>TheMarker</cite></a>
   </footer>
 </blockquote>
 
@@ -178,7 +178,7 @@ layers:
     from the opposite side will join you. From here &mdash; the correspondence is in your hands.
   </p>
   <footer>
-    &mdash; <a href="https://www.mako.co.il/nexter-news/Article-841ed8bdb4e2481027.htm" target="_blank" rel="noopener"><cite>mako</cite></a>, Dana Guterzon
+    &mdash; Dana Guterzon, <a href="https://www.mako.co.il/nexter-news/Article-841ed8bdb4e2481027.htm" target="_blank" rel="noopener"><cite>mako</cite></a>
   </footer>
 </blockquote>
 
@@ -188,8 +188,7 @@ layers:
     which conflict is sought directly.
   </p>
   <footer>
-    &mdash; <a href="https://web.archive.org/web/20221101112322/https:/www.abc.es/tecnologia/moviles/aplicaciones/mishu-tinder-gente-quiere-discutir-20221101114954-nt.html" target="_blank" rel="noopener"><cite>ABC News</cite></a>
-    (Spain), David Sánchez de Castro
+    &mdash; David Sánchez de Castro, <a href="https://web.archive.org/web/20221101112322/https:/www.abc.es/tecnologia/moviles/aplicaciones/mishu-tinder-gente-quiere-discutir-20221101114954-nt.html" target="_blank" rel="noopener"><cite>ABC News</cite></a> (Spain)
   </footer>
 </blockquote>
 
