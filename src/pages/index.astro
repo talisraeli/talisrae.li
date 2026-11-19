@@ -3,7 +3,7 @@ import Layout from "../layout/Layout.astro";
 import {Tabs} from "../layout/tabs/tabs.ts";
 import profile from "./assets/profile.jpg";
 import Image from "astro/components/Image.astro";
-import GreenLightIcon from "./assets/green-light-icon.svg";
+import GreenLight from "../components/GreenLight.astro";
 
 const aboutRows = [
     {label: "Focus", details: "Backend, cloud and distributed systems"},
@@ -38,7 +38,7 @@ const aboutRows = [
                     <dt>GPA:</dt>
                     <dd>91.4 / 100</dd>
                     <dt>Status:</dt>
-                    <dd><span class="status"><GreenLightIcon width={16} height={16} viewBox="-10 -10 252.33508 252.33508" aria-hidden="true"/>Open to internships</span></dd>
+                    <dd><span class="status"><GreenLight/>Open to internships</span></dd>
                 </dl>
                 <div class="actions">
                     <a class="button default" href="/contact">Get in touch</a>
@@ -147,23 +147,7 @@ const aboutRows = [
         display: inline-flex;
         align-items: center;
         gap: 0.35rem;
-
-        @media (prefers-reduced-motion: no-preference) {
-          :global(svg) {
-            animation: green-light-pulse 2.5s ease-in-out infinite;
-          }
-        }
       }
-    }
-  }
-
-  @keyframes green-light-pulse {
-    0%,
-    100% {
-      filter: drop-shadow(0 0 1.5px rgb(25 240 0 / 0.6));
-    }
-    50% {
-      filter: drop-shadow(0 0 3.5px rgb(25 240 0 / 0.8));
     }
   }
 
