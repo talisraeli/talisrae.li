@@ -1,0 +1,7 @@
+dist/
+.astro/
+node_modules/
+pnpm-lock.yaml
+
+# Prettier only supports MDX 1 and changes how MDX 3 content renders
+*.mdx
