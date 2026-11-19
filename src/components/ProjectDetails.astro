@@ -1,21 +1,21 @@
 ---
 interface Props {
-    details: { area: string, details: string }[];
+  details: { area: string; details: string }[];
 }
 
-const {details} = Astro.props;
+const { details } = Astro.props;
 ---
 
 <table>
-    <caption>Project Details</caption>
-    <tbody>
-    {details.map(detail => (
-            <tr>
-                <th scope="row">{detail.area}</th>
-                <td>{detail.details}</td>
-            </tr>
+  <caption>Project Details</caption>
+  <tbody>
+    {details.map((detail) => (
+      <tr>
+        <th scope="row">{detail.area}</th>
+        <td>{detail.details}</td>
+      </tr>
     ))}
-    </tbody>
+  </tbody>
 </table>
 
 <style lang="scss">

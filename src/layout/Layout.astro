@@ -2,195 +2,188 @@
 import Header from "./header/Header.astro";
 import TabPanel from "./tabs/TabPanel.astro";
 import Footer from "./Footer.astro";
-import {Tabs} from "./tabs/tabs.ts";
-import {getImage} from "astro:assets";
+import { Tabs } from "./tabs/tabs.ts";
+import { getImage } from "astro:assets";
 import profile from "../pages/assets/profile.jpg";
 
 interface Props {
-    activeTab: Tabs;
-    title?: string;
-    description?: string;
+  activeTab: Tabs;
+  title?: string;
+  description?: string;
 }
 
-const {activeTab} = Astro.props;
+const { activeTab } = Astro.props;
 
-const pageMeta: Record<Tabs, { title: string, description: string }> = {
-    [Tabs.Home]: {
-        title: "Tal Israeli — Software Engineering Student",
-        description: "Tal Israeli is a Software Engineering Student at the Technion, specializing in backend, cloud and distributed systems.",
-    },
-    [Tabs.Education]: {
-        title: "Education — Tal Israeli",
-        description: "Tal Israeli's academic background: a B.Sc. in Software Engineering at the Technion, and a Computer Science program at the Weizmann Institute of Science.",
-    },
-    [Tabs.Projects]: {
-        title: "Projects — Tal Israeli",
-        description: "Software projects by Tal Israeli, a software engineer focused on backend, cloud and distributed systems.",
-    },
-    [Tabs.Contact]: {
-        title: "Contact — Tal Israeli",
-        description: "Get in touch with Tal Israeli by email, LinkedIn, GitHub or X.",
-    },
+const pageMeta: Record<Tabs, { title: string; description: string }> = {
+  [Tabs.Home]: {
+    title: "Tal Israeli — Software Engineering Student",
+    description:
+      "Tal Israeli is a Software Engineering Student at the Technion, specializing in backend, cloud and distributed systems.",
+  },
+  [Tabs.Education]: {
+    title: "Education — Tal Israeli",
+    description:
+      "Tal Israeli's academic background: a B.Sc. in Software Engineering at the Technion, and a Computer Science program at the Weizmann Institute of Science.",
+  },
+  [Tabs.Projects]: {
+    title: "Projects — Tal Israeli",
+    description:
+      "Software projects by Tal Israeli, a software engineer focused on backend, cloud and distributed systems.",
+  },
+  [Tabs.Contact]: {
+    title: "Contact — Tal Israeli",
+    description: "Get in touch with Tal Israeli by email, LinkedIn, GitHub or X.",
+  },
 };
 
-const {
-    title = pageMeta[activeTab].title,
-    description = pageMeta[activeTab].description,
-} = Astro.props;
+const { title = pageMeta[activeTab].title, description = pageMeta[activeTab].description } = Astro.props;
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
-const ogImage = await getImage({src: profile, width: 600, format: "jpg"});
+const ogImage = await getImage({ src: profile, width: 600, format: "jpg" });
 ---
 
 <html lang="en-US">
-<head>
-    <meta charset="utf-8"/>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
-    <link rel="icon" href="/favicon.ico"/>
-    <meta name="viewport" content="width=device-width"/>
-    <meta name="generator" content={Astro.generator}/>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
-    <meta name="description" content={description}/>
-    <link rel="canonical" href={canonicalUrl}/>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
 
-    <meta property="og:type" content="website"/>
-    <meta property="og:site_name" content="Tal Israeli's Portfolio"/>
-    <meta property="og:locale" content="en_US"/>
-    <meta property="og:title" content={title}/>
-    <meta property="og:description" content={description}/>
-    <meta property="og:url" content={canonicalUrl}/>
-    <meta property="og:image" content={new URL(ogImage.src, Astro.site)}/>
-    <meta property="og:image:width" content={ogImage.attributes.width}/>
-    <meta property="og:image:height" content={ogImage.attributes.height}/>
-    <meta property="og:image:alt" content="Portrait of Tal Israeli"/>
-    <meta name="twitter:card" content="summary"/>
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Tal Israeli's Portfolio" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={new URL(ogImage.src, Astro.site)} />
+    <meta property="og:image:width" content={ogImage.attributes.width} />
+    <meta property="og:image:height" content={ogImage.attributes.height} />
+    <meta property="og:image:alt" content="Portrait of Tal Israeli" />
+    <meta name="twitter:card" content="summary" />
 
     <!-- Apply saved theme before paint to prevent flash -->
     <script is:inline>
-        (function () {
-            const themeInLocalStorage = localStorage.getItem("theme");
-            const matchQueryList = window.matchMedia &&
-                window.matchMedia("(prefers-color-scheme: light)");
-            const themeInMql = matchQueryList && matchQueryList.matches ? "light" : "dark";
-            const theme = themeInLocalStorage || themeInMql;
-            document.documentElement.setAttribute("data-theme", theme);
-        })();
+      (function () {
+        const themeInLocalStorage = localStorage.getItem("theme");
+        const matchQueryList = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)");
+        const themeInMql = matchQueryList && matchQueryList.matches ? "light" : "dark";
+        const theme = themeInLocalStorage || themeInMql;
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
     </script>
-</head>
-<body>
-<div class="window">
-    <Header/>
-    <TabPanel activeTab={activeTab}>
+  </head>
+  <body>
+    <div class="window">
+      <Header />
+      <TabPanel activeTab={activeTab}>
         <main>
-            <slot/>
+          <slot />
         </main>
-    </TabPanel>
-    <Footer/>
-</div>
-</body>
+      </TabPanel>
+      <Footer />
+    </div>
+  </body>
 </html>
 
 <style is:global>
-    :root,
-    [data-theme="light"] {
-        --title-bar-bg: white;
-        --window-bg: #eeeef2;
-        --window-border: #ccc;
-        --text-color: #1f1f1f;
-        --tab-bg: white;
-        --tab-button-inactive-bg: linear-gradient(to bottom, #f2f2f2, #e1e1e1);
-        --tab-border: #aaa;
-        --menu-btn-bg-hover: #e5f1fb;
-        --menu-btn-border-hover: #0076d6;
-        --tab-btn-border-hover: #57b3ff;
-        --tab-btn-bg-hover: linear-gradient(to bottom, #e5f1fb, #bde0ff);
-        --link-color: #0066cc;
+  :root,
+  [data-theme="light"] {
+    --title-bar-bg: white;
+    --window-bg: #eeeef2;
+    --window-border: #ccc;
+    --text-color: #1f1f1f;
+    --tab-bg: white;
+    --tab-button-inactive-bg: linear-gradient(to bottom, #f2f2f2, #e1e1e1);
+    --tab-border: #aaa;
+    --menu-btn-bg-hover: #e5f1fb;
+    --menu-btn-border-hover: #0076d6;
+    --tab-btn-border-hover: #57b3ff;
+    --tab-btn-bg-hover: linear-gradient(to bottom, #e5f1fb, #bde0ff);
+    --link-color: #0066cc;
+  }
+
+  [data-theme="dark"] {
+    --title-bar-bg: #2b2b2b;
+    --window-bg: #333337;
+    --window-border: #3f3f46;
+    --text-color: #cccccc;
+    --tab-bg: #252526;
+    --tab-button-inactive-bg: linear-gradient(to bottom, #3c3c3f, #2d2d30);
+    --tab-border: #3f3f46;
+    --menu-btn-bg-hover: #234057;
+    --menu-btn-border-hover: #007acc;
+    --tab-btn-border-hover: #007acc;
+    --tab-btn-bg-hover: linear-gradient(to bottom, #234057, #12283c);
+    --link-color: #569cd6;
+  }
+
+  fieldset {
+    border: var(--window-border) 1px solid;
+    border-radius: 0.25rem;
+    padding: 1rem;
+
+    legend {
+      font-weight: 500;
     }
 
-    [data-theme="dark"] {
-        --title-bar-bg: #2b2b2b;
-        --window-bg: #333337;
-        --window-border: #3f3f46;
-        --text-color: #cccccc;
-        --tab-bg: #252526;
-        --tab-button-inactive-bg: linear-gradient(to bottom, #3c3c3f, #2d2d30);
-        --tab-border: #3f3f46;
-        --menu-btn-bg-hover: #234057;
-        --menu-btn-border-hover: #007acc;
-        --tab-btn-border-hover: #007acc;
-        --tab-btn-bg-hover: linear-gradient(to bottom, #234057, #12283c);
-        --link-color: #569cd6;
+    p {
+      line-height: 1.6;
+
+      &:first-of-type {
+        margin-block-start: 0;
+      }
+
+      strong {
+        font-weight: 500;
+      }
     }
+  }
 
-    fieldset {
-        border: var(--window-border) 1px solid;
-        border-radius: 0.25rem;
-        padding: 1rem;
+  a {
+    color: var(--link-color);
+  }
 
-        legend {
-            font-weight: 500;
-        }
-
-        p {
-            line-height: 1.6;
-
-            &:first-of-type {
-                margin-block-start: 0;
-            }
-
-            strong {
-                font-weight: 500;
-            }
-        }
+  /* Rickroll spin animation */
+  @keyframes rickroll-spin {
+    0% {
+      transform: rotate(0deg) scale(1);
     }
-
-    a {
-        color: var(--link-color);
+    20% {
+      transform: rotate(180deg) scale(0.7);
     }
-
-    /* Rickroll spin animation */
-    @keyframes rickroll-spin {
-        0% {
-            transform: rotate(0deg) scale(1);
-        }
-        20% {
-            transform: rotate(180deg) scale(0.7);
-        }
-        40% {
-            transform: rotate(360deg) scale(1.2);
-        }
-        60% {
-            transform: rotate(720deg) scale(0.8);
-        }
-        80% {
-            transform: rotate(1080deg) scale(1.1);
-        }
-        100% {
-            transform: rotate(1440deg) scale(1);
-        }
+    40% {
+      transform: rotate(360deg) scale(1.2);
     }
-
-    .window.rickrolled {
-        animation: rickroll-spin 2.5s ease-in-out;
+    60% {
+      transform: rotate(720deg) scale(0.8);
     }
+    80% {
+      transform: rotate(1080deg) scale(1.1);
+    }
+    100% {
+      transform: rotate(1440deg) scale(1);
+    }
+  }
+
+  .window.rickrolled {
+    animation: rickroll-spin 2.5s ease-in-out;
+  }
 </style>
 
 <style lang="scss">
   $window-width: 800px;
   $window-height: 650px;
 
-  $wallpaper: radial-gradient(
-          ellipse at 30% 20%,
-          rgba(255, 255, 255, 0.08) 0%,
-          transparent 50%
-  ),
-  linear-gradient(135deg, #3a6ea5 0%, #2b579a 40%, #1e3a5f 100%);
+  $wallpaper:
+    radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+    linear-gradient(135deg, #3a6ea5 0%, #2b579a 40%, #1e3a5f 100%);
 
-  $wallpaper-dark: radial-gradient(
-          ellipse at 30% 20%,
-          rgba(255, 255, 255, 0.03) 0%,
-          transparent 50%
-  ),
-  linear-gradient(135deg, #000029 0%, #31163e 40%, #180f1a 100%);
+  $wallpaper-dark:
+    radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
+    linear-gradient(135deg, #000029 0%, #31163e 40%, #180f1a 100%);
 
   body {
     margin: 0;

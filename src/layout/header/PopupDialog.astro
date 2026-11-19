@@ -1,41 +1,43 @@
 ---
 interface Props {
-    id: string;
-    title: string;
-    width?: string;
+  id: string;
+  title: string;
+  width?: string;
 }
 
-const {id, title, width = '400px'} = Astro.props;
+const { id, title, width = "400px" } = Astro.props;
 ---
 
 <dialog id={id} class="wpf-dialog">
-    <div class="dialog-window" style={`width: ${width}`}>
-        <div class="dialog-title-bar">
-            <span class="dialog-title">{title}</span>
-            <button class="dialog-close" aria-label="Close">&times;</button>
-        </div>
-        <div class="dialog-content">
-            <slot/>
-        </div>
+  <div class="dialog-window" style={`width: ${width}`}>
+    <div class="dialog-title-bar">
+      <span class="dialog-title">{title}</span>
+      <button class="dialog-close" aria-label="Close">
+        &times;
+      </button>
     </div>
+    <div class="dialog-content">
+      <slot />
+    </div>
+  </div>
 </dialog>
 
 <script>
-    // Close dialog on close button click
-    document.querySelectorAll('.dialog-close').forEach(btn => {
-        btn.addEventListener('click', () => {
-            (btn.closest('dialog') as HTMLDialogElement)?.close();
-        });
+  // Close dialog on close button click
+  document.querySelectorAll(".dialog-close").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      (btn.closest("dialog") as HTMLDialogElement)?.close();
     });
+  });
 
-    // Close dialog on backdrop click
-    document.querySelectorAll('.wpf-dialog').forEach(dialog => {
-        dialog.addEventListener('click', (e) => {
-            if (e.target === dialog) {
-                (dialog as HTMLDialogElement).close();
-            }
-        });
+  // Close dialog on backdrop click
+  document.querySelectorAll(".wpf-dialog").forEach((dialog) => {
+    dialog.addEventListener("click", (e) => {
+      if (e.target === dialog) {
+        (dialog as HTMLDialogElement).close();
+      }
     });
+  });
 </script>
 
 <style lang="scss">

@@ -1,6 +1,6 @@
 export enum Tabs {
-    Home,
-    Education,
-    Projects,
-    Contact
+  Home,
+  Education,
+  Projects,
+  Contact,
 }

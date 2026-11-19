@@ -1,78 +1,83 @@
 ---
 import Layout from "../../layout/Layout.astro";
-import {Tabs} from "../../layout/tabs/tabs.ts";
+import { Tabs } from "../../layout/tabs/tabs.ts";
 import TechnionLogo from "../assets/technion-logo.svg";
 import WeizmannLogo from "../assets/weizmann-logo.svg";
 import GreenLight from "../../components/GreenLight.astro";
 
 const courses = [
-    {name: "Intro. to Computer Science", grade: "100"},
-    {name: "Intro. to Systems Programming", grade: "95"},
-    {name: "Data Structures 1", grade: "In progress", inProgress: true},
+  { name: "Intro. to Computer Science", grade: "100" },
+  { name: "Intro. to Systems Programming", grade: "95" },
+  { name: "Data Structures 1", grade: "In progress", inProgress: true },
 ];
 ---
 
 <Layout activeTab={Tabs.Education}>
-    <fieldset>
-        <legend>Technion &mdash; Israel Institute of Technology</legend>
-        <div class="institute-header">
-            <TechnionLogo class="technion-logo" role="img" aria-label="Technion logo"/>
-            <h2>Bachelor of Science (B.Sc.) in Software Engineering</h2>
-        </div>
-        <dl>
-            <dt>Period:</dt>
-            <dd>2025&ndash;Present</dd>
-            <dt>Location:</dt>
-            <dd>Haifa, Israel</dd>
-            <dt>GPA:</dt>
-            <dd>91.4 / 100</dd>
-            <dt>Expected Graduation:</dt>
-            <dd>June 2029</dd>
-        </dl>
-        <table>
-            <caption>Relevant Courses</caption>
-            <thead>
-            <tr>
-                <th scope="col">Course</th>
-                <th scope="col">Grade</th>
-            </tr>
-            </thead>
-            <tbody>
-            {courses.map(course => (
-                    <tr>
-                        <td>{course.name}</td>
-                        <td>
-                            {course.inProgress
-                                ? <span class="in-progress"><GreenLight size={12}/>{course.grade}</span>
-                                : course.grade}
-                        </td>
-                    </tr>
-            ))}
-            </tbody>
-        </table>
-    </fieldset>
+  <fieldset>
+    <legend>Technion &mdash; Israel Institute of Technology</legend>
+    <div class="institute-header">
+      <TechnionLogo class="technion-logo" role="img" aria-label="Technion logo" />
+      <h2>Bachelor of Science (B.Sc.) in Software Engineering</h2>
+    </div>
+    <dl>
+      <dt>Period:</dt>
+      <dd>2025&ndash;Present</dd>
+      <dt>Location:</dt>
+      <dd>Haifa, Israel</dd>
+      <dt>GPA:</dt>
+      <dd>91.4 / 100</dd>
+      <dt>Expected Graduation:</dt>
+      <dd>June 2029</dd>
+    </dl>
+    <table>
+      <caption>Relevant Courses</caption>
+      <thead>
+        <tr>
+          <th scope="col">Course</th>
+          <th scope="col">Grade</th>
+        </tr>
+      </thead>
+      <tbody>
+        {courses.map((course) => (
+          <tr>
+            <td>{course.name}</td>
+            <td>
+              {course.inProgress ? (
+                <span class="in-progress">
+                  <GreenLight size={12} />
+                  {course.grade}
+                </span>
+              ) : (
+                course.grade
+              )}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </fieldset>
 
-    <fieldset>
-        <legend>Weizmann Institute of Science</legend>
-        <div class="institute-header">
-            <WeizmannLogo role="img" aria-label="Weizmann Institute of Science logo"/>
-            <h2>&ldquo;Computer Science &mdash; Academia and Industry&rdquo; Program</h2>
-        </div>
-        <dl>
-            <dt>Period:</dt>
-            <dd>2018&ndash;2020</dd>
-            <dt>Location:</dt>
-            <dd>Rehovot, Israel</dd>
-            <dt>Final Grade:</dt>
-            <dd>100 / 100</dd>
-        </dl>
-        <p>
-            The program introduces participants to research and development in computer science, software engineering
-            and computer engineering, exploring both their academic and practical applications. It focuses on leading
-            disciplines in the industry, including artificial intelligence, cryptography, machine learning, smartphone
-            simulations, websites, robotics, Big Data and game theory.
-        </p>
-    </fieldset>
+  <fieldset>
+    <legend>Weizmann Institute of Science</legend>
+    <div class="institute-header">
+      <WeizmannLogo role="img" aria-label="Weizmann Institute of Science logo" />
+      <h2>&ldquo;Computer Science &mdash; Academia and Industry&rdquo; Program</h2>
+    </div>
+    <dl>
+      <dt>Period:</dt>
+      <dd>2018&ndash;2020</dd>
+      <dt>Location:</dt>
+      <dd>Rehovot, Israel</dd>
+      <dt>Final Grade:</dt>
+      <dd>100 / 100</dd>
+    </dl>
+    <p>
+      The program introduces participants to research and development in computer science, software engineering and
+      computer engineering, exploring both their academic and practical applications. It focuses on leading disciplines
+      in the industry, including artificial intelligence, cryptography, machine learning, smartphone simulations,
+      websites, robotics, Big Data and game theory.
+    </p>
+  </fieldset>
 </Layout>
 
 <style lang="scss">

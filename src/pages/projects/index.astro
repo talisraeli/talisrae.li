@@ -1,51 +1,58 @@
 ---
 import Layout from "../../layout/Layout.astro";
-import {Tabs} from "../../layout/tabs/tabs.ts";
+import { Tabs } from "../../layout/tabs/tabs.ts";
 import Image from "astro/components/Image.astro";
-import {getCollection} from "astro:content";
+import { getCollection } from "astro:content";
 
 // Newest first. Periods start with a four-digit year, so comparing them as strings orders them by start year.
-const projects = (await getCollection("projects"))
-    .sort((a, b) => b.data.period.localeCompare(a.data.period));
+const projects = (await getCollection("projects")).sort((a, b) => b.data.period.localeCompare(a.data.period));
 ---
 
 <Layout activeTab={Tabs.Projects}>
-    <ul class="projects">
-        {projects.map(({id, data: project}) => (
-                <li>
-                    <fieldset>
-                        <legend>{project.title}</legend>
-                        <div class="project">
-                            <Image src={project.cover}
-                                   alt={project.coverAlt}
-                                   decoding="async" width={600} quality="high" format="webp"/>
-                            <div class="summary">
-                                <p>{project.summary}</p>
-                                <dl>
-                                    <dt>Period:</dt>
-                                    <dd>{project.period}</dd>
-                                    <dt>Technologies:</dt>
-                                    <dd>
-                                        <ul class="tags">
-                                            {project.technologies.map(technology => <li>{technology}</li>)}
-                                        </ul>
-                                    </dd>
-                                </dl>
-                                <div class="actions">
-                                    <a class="button default" href={`/projects/${id}`}>Read more</a>
-                                    {project.sourceCode && (
-                                            <a class="button"
-                                               href={project.sourceCode}
-                                               target="_blank"
-                                               rel="noopener">Source code</a>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
-                </li>
-        ))}
-    </ul>
+  <ul class="projects">
+    {projects.map(({ id, data: project }) => (
+      <li>
+        <fieldset>
+          <legend>{project.title}</legend>
+          <div class="project">
+            <Image
+              src={project.cover}
+              alt={project.coverAlt}
+              decoding="async"
+              width={600}
+              quality="high"
+              format="webp"
+            />
+            <div class="summary">
+              <p>{project.summary}</p>
+              <dl>
+                <dt>Period:</dt>
+                <dd>{project.period}</dd>
+                <dt>Technologies:</dt>
+                <dd>
+                  <ul class="tags">
+                    {project.technologies.map((technology) => (
+                      <li>{technology}</li>
+                    ))}
+                  </ul>
+                </dd>
+              </dl>
+              <div class="actions">
+                <a class="button default" href={`/projects/${id}`}>
+                  Read more
+                </a>
+                {project.sourceCode && (
+                  <a class="button" href={project.sourceCode} target="_blank" rel="noopener">
+                    Source code
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </li>
+    ))}
+  </ul>
 </Layout>
 
 <style lang="scss">
