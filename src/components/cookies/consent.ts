@@ -1,3 +1,4 @@
+import Clarity from "@microsoft/clarity";
 import { PUBLIC_CLARITY_PROJECT_ID, PUBLIC_GA_MEASUREMENT_ID, PUBLIC_GTM_CONTAINER_ID } from "astro:env/client";
 
 /** The optional analytics providers a visitor can allow or decline, each on its own. */
@@ -44,7 +45,7 @@ export function setConsent(consent: Consent) {
   const withdrewClarity = previous?.clarity && !consent.clarity;
   if (withdrewGoogleAnalytics) deleteCookies((name) => name === "_ga" || name.startsWith("_ga_"));
   if (withdrewClarity) {
-    window.clarity?.("consent", false); // Erases Clarity's cookies and stops tracking.
+    if (window.clarity) Clarity.consent(false); // Erases Clarity's cookies and stops tracking.
     deleteCookies((name) => name === "_clck" || name === "_clsk");
   }
 
@@ -69,7 +70,7 @@ declare global {
   interface Window {
     dataLayer?: unknown[];
     gtag?: (...args: unknown[]) => void;
-    clarity?: ((...args: unknown[]) => void) & { q?: unknown[] };
+    clarity?: (...args: unknown[]) => void;
   }
 }
 
@@ -129,15 +130,10 @@ function loadGoogleTagManager() {
 function loadClarity() {
   if (!PUBLIC_CLARITY_PROJECT_ID || window.clarity) return;
 
-  const clarity: NonNullable<Window["clarity"]> = function () {
-    // Like gtag.js, Clarity's queue expects the `arguments` object itself.
-    // eslint-disable-next-line prefer-rest-params
-    (clarity.q = clarity.q || []).push(arguments);
-  };
-  window.clarity = clarity;
+  // init() sets up window.clarity and injects the tag, so the consent call has to come after it.
+  Clarity.init(PUBLIC_CLARITY_PROJECT_ID);
   // Analytics only: Microsoft advertising storage stays denied.
-  clarity("consentv2", { ad_Storage: "denied", analytics_Storage: "granted" });
-  loadScript(`https://www.clarity.ms/tag/${encodeURIComponent(PUBLIC_CLARITY_PROJECT_ID)}`);
+  Clarity.consentV2({ ad_Storage: "denied", analytics_Storage: "granted" });
 }
 
 /** Deletes matching cookies on this host and its parent domains, wherever the provider may have set them. */
