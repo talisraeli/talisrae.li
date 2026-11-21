@@ -2,15 +2,16 @@
 import Header from "./header/Header.astro";
 import TabPanel from "./tabs/TabPanel.astro";
 import Footer from "./Footer.astro";
+import CookieConsent from "../components/cookies/CookieConsent.astro";
 import { Tabs } from "./tabs/tabs.ts";
 import { getImage } from "astro:assets";
+import { PUBLIC_NEGISHOT_WIDGET_CODE } from "astro:env/client";
 import profile from "../assets/profile.jpg";
 
-interface Props {
-  activeTab: Tabs;
-  title?: string;
-  description?: string;
-}
+// Pages outside the tabs (like the Terms of Service) leave activeTab out and pass their own title and description.
+type Props =
+  | { activeTab: Tabs; title?: string; description?: string }
+  | { activeTab?: undefined; title: string; description: string };
 
 const { activeTab } = Astro.props;
 
@@ -36,7 +37,8 @@ const pageMeta: Record<Tabs, { title: string; description: string }> = {
   },
 };
 
-const { title = pageMeta[activeTab].title, description = pageMeta[activeTab].description } = Astro.props;
+const defaultMeta = activeTab === undefined ? undefined : pageMeta[activeTab];
+const { title = defaultMeta!.title, description = defaultMeta!.description } = Astro.props;
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 const ogImage = await getImage({ src: profile, width: 600, format: "jpg" });
 ---
@@ -85,6 +87,13 @@ const ogImage = await getImage({ src: profile, width: 600, format: "jpg" });
       </TabPanel>
       <Footer />
     </div>
+    <CookieConsent />
+    {PUBLIC_NEGISHOT_WIDGET_CODE && (
+      <script
+        is:inline
+        src={`https://negishot.co.il/cdn/widget.php?code=${encodeURIComponent(PUBLIC_NEGISHOT_WIDGET_CODE)}`}
+      />
+    )}
   </body>
 </html>
 

@@ -6,13 +6,15 @@ const currentYear = new Date().getUTCFullYear();
   <ul class="legal">
     <li>&copy; {currentYear} Tal Israeli</li>
     <li>
-      <a href="#">Terms</a>
+      <a href="/terms-of-service">Terms</a>
     </li>
     <li>
-      <a href="#">Privacy</a>
+      <a href="/privacy-policy">Privacy</a>
     </li>
     <li>
-      <a href="#">Manage Cookies</a>
+      <button type="button" class="link" data-action="help-cookies">
+        Manage Cookies
+      </button>
     </li>
   </ul>
 </footer>
@@ -29,6 +31,16 @@ const currentYear = new Date().getUTCFullYear();
       display: flex;
       flex-wrap: wrap;
       gap: 0 1rem;
+    }
+
+    button.link {
+      padding: 0;
+      border: none;
+      background: none;
+      color: var(--link-color);
+      font: inherit;
+      text-decoration: underline;
+      cursor: pointer;
     }
   }
 </style>

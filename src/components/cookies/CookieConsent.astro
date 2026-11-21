@@ -1,0 +1,233 @@
+---
+import PopupDialog from "../../layouts/header/PopupDialog.astro";
+---
+
+<!-- Shown until the visitor makes a choice. Not a <dialog>, so it doesn't block the page or its keyboard shortcuts. -->
+<section class="cookie-banner" role="region" aria-labelledby="cookie-banner-title" hidden>
+  <div class="title-bar">
+    <span id="cookie-banner-title">Cookies</span>
+  </div>
+  <div class="content">
+    <p>
+      This website uses necessary storage to work. With your permission, it also uses analytics cookies (Google
+      Analytics and Microsoft Clarity) to understand how visitors use it. <a href="/privacy-policy">Learn more</a> or{" "}
+      <button type="button" class="link" data-consent="customize">
+        customize
+      </button>
+      .
+    </p>
+    <div class="buttons">
+      <button type="button" class="wpf-button" data-consent="reject">
+        Necessary Only
+      </button>
+      <button type="button" class="wpf-button default" data-consent="accept">
+        Accept All
+      </button>
+    </div>
+  </div>
+</section>
+
+<PopupDialog id="cookies-dialog" title="Manage Cookies" width="440px">
+  <form class="cookie-settings" method="dialog">
+    <p>
+      Choose which optional analytics this website may use. You can change your choice at any time. See the{" "}
+      <a href="/privacy-policy">Privacy Policy</a> for the details of what each one collects.
+    </p>
+
+    <label class="option">
+      <input type="checkbox" checked disabled />
+      <span>
+        <strong>Necessary</strong>
+        <span class="details">
+          Remembers your theme, this choice and your accessibility settings. Needed for the Website and its
+          accessibility widget to work. Always on.
+        </span>
+      </span>
+    </label>
+    <label class="option">
+      <input type="checkbox" name="googleAnalytics" />
+      <span>
+        <strong>Google Analytics</strong>
+        <span class="details">
+          Counts visits and shows which pages are read, and where visitors come from. Includes Google Tag Manager.
+        </span>
+      </span>
+    </label>
+    <label class="option">
+      <input type="checkbox" name="clarity" />
+      <span>
+        <strong>Microsoft Clarity</strong>
+        <span class="details">Records clicks, scrolling and mouse movements, to show how pages are used.</span>
+      </span>
+    </label>
+
+    <div class="buttons">
+      <button type="button" class="wpf-button" data-consent="reject">
+        Necessary Only
+      </button>
+      <button type="button" class="wpf-button" data-consent="accept">
+        Accept All
+      </button>
+      <button type="submit" class="wpf-button default" data-consent="save">
+        Save
+      </button>
+    </div>
+  </form>
+</PopupDialog>
+
+<script>
+  import { applyConsent, getConsent, isAnalyticsConfigured, setConsent, type Consent } from "./consent.ts";
+
+  const banner = document.querySelector<HTMLElement>(".cookie-banner")!;
+  const dialog = document.getElementById("cookies-dialog") as HTMLDialogElement;
+  const form = dialog.querySelector<HTMLFormElement>("form")!;
+  const checkbox = (name: keyof Consent) => form.elements.namedItem(name) as HTMLInputElement;
+
+  function showChoice(consent: Consent | null) {
+    checkbox("googleAnalytics").checked = consent?.googleAnalytics ?? false;
+    checkbox("clarity").checked = consent?.clarity ?? false;
+  }
+
+  function choose(consent: Consent) {
+    banner.hidden = true;
+    dialog.close();
+    setConsent(consent);
+    showChoice(consent);
+  }
+
+  const saved = getConsent();
+  showChoice(saved);
+  if (saved) applyConsent(saved);
+  else if (isAnalyticsConfigured) banner.hidden = false;
+
+  // Opening the dialog without saving (e.g. closing it with the × button) shouldn't leave unsaved checkmarks behind.
+  dialog.addEventListener("close", () => showChoice(getConsent()));
+
+  document.addEventListener("click", (e) => {
+    const button = (e.target as HTMLElement).closest<HTMLElement>("[data-consent]");
+    switch (button?.dataset.consent) {
+      case "accept":
+        choose({ googleAnalytics: true, clarity: true });
+        break;
+      case "reject":
+        choose({ googleAnalytics: false, clarity: false });
+        break;
+      case "customize":
+        dialog.showModal();
+        break;
+    }
+  });
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    choose({ googleAnalytics: checkbox("googleAnalytics").checked, clarity: checkbox("clarity").checked });
+  });
+</script>
+
+<style lang="scss">
+  .cookie-banner {
+    position: fixed;
+    inset-inline-end: 1rem;
+    inset-block-end: 1rem;
+    z-index: 10;
+    width: min(340px, calc(100vw - 2rem));
+    background: var(--window-bg);
+    border: 1px solid var(--window-border);
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    font-size: 0.85rem;
+
+    &[hidden] {
+      display: none;
+    }
+
+    .title-bar {
+      background: var(--title-bar-bg);
+      padding: 0.4rem 1rem;
+      font-weight: 500;
+    }
+
+    .content {
+      padding: 0.75rem 1rem 1rem;
+    }
+
+    p {
+      margin: 0 0 0.75rem;
+      line-height: 1.5;
+    }
+  }
+
+  .cookie-banner .link {
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--link-color);
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .cookie-settings {
+    font-size: 0.85rem;
+
+    p {
+      margin: 0 0 0.75rem;
+      line-height: 1.5;
+    }
+
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      padding: 0.5rem 0;
+      border-block-start: 1px solid var(--window-border);
+
+      input {
+        margin: 0.15rem 0 0;
+      }
+
+      strong {
+        display: block;
+        font-weight: 500;
+      }
+
+      .details {
+        opacity: 0.8;
+      }
+    }
+
+    .buttons {
+      padding-block-start: 0.75rem;
+      border-block-start: 1px solid var(--window-border);
+    }
+  }
+
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+
+  // A WPF Aero push button; the default button gets the blue focus-style border.
+  .wpf-button {
+    min-width: 5.5rem;
+    padding: 0.2rem 0.75rem;
+    border: var(--tab-border) 1px solid;
+    border-radius: 0.15rem;
+    background: var(--tab-button-inactive-bg);
+    color: var(--text-color);
+    font: inherit;
+    cursor: default;
+
+    &.default {
+      border-color: var(--menu-btn-border-hover);
+    }
+
+    &:hover {
+      border-color: var(--tab-btn-border-hover);
+      background: var(--tab-btn-bg-hover);
+    }
+  }
+</style>

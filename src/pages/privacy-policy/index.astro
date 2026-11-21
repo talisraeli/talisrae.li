@@ -1,0 +1,430 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+const lastUpdated = new Date("2026-11-21");
+
+const googleAnalyticsCookies = [
+  { name: "_ga", purpose: "Distinguishes visitors with a random ID.", expires: "2 years" },
+  { name: "_ga_<ID>", purpose: "Keeps track of the current visit (session).", expires: "2 years" },
+];
+
+const clarityCookies = [
+  {
+    name: "_clck",
+    party: "First-party",
+    purpose: "Keeps a random Clarity user ID and its preferences.",
+    expires: "1 year",
+  },
+  {
+    name: "_clsk",
+    party: "First-party",
+    purpose: "Connects the pages you view into a single recorded session.",
+    expires: "1 day",
+  },
+  {
+    name: "CLID",
+    party: "Third-party (clarity.ms)",
+    purpose: "Records the first time Clarity saw this browser on any website that uses Clarity.",
+    expires: "1 year",
+  },
+  {
+    name: "MUID",
+    party: "Third-party (Microsoft)",
+    purpose: "Identifies unique browsers visiting Microsoft websites.",
+    expires: "1 year",
+  },
+  {
+    name: "MR",
+    party: "Third-party (Microsoft)",
+    purpose: "Indicates whether to refresh the MUID.",
+    expires: "7 days",
+  },
+  {
+    name: "SM",
+    party: "Third-party (Microsoft)",
+    purpose: "Synchronizes the MUID across Microsoft domains.",
+    expires: "End of session",
+  },
+  {
+    name: "ANONCHK",
+    party: "Third-party (Microsoft)",
+    purpose: "Technical flag; Clarity always sets it to 0.",
+    expires: "10 minutes",
+  },
+];
+
+const accessibilityStorage = [
+  {
+    name: "negishot_prefs",
+    type: "Cookie (first-party)",
+    purpose: "Remembers the accessibility settings you chose.",
+    expires: "30 days",
+  },
+  {
+    name: "negishot_prefs_<code>",
+    type: "Local storage",
+    purpose: "Remembers the accessibility settings you chose.",
+    expires: "Until you clear it",
+  },
+  {
+    name: "negishot_sid",
+    type: "Local storage",
+    purpose: "A random ID that groups your use of the widget into a session for Negishot's usage statistics.",
+    expires: "Until you clear it",
+  },
+];
+---
+
+<Layout
+  title="Privacy Policy — Tal Israeli"
+  description="How Tal Israeli's personal website, talisrae.li, handles your information, including the optional Google Analytics and Microsoft Clarity analytics."
+>
+  <fieldset>
+    <legend>Privacy Policy</legend>
+    <p class="updated">
+      Last updated:{" "}
+      <time datetime={lastUpdated.toISOString().slice(0, 10)}>
+        {lastUpdated.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })}
+      </time>
+    </p>
+
+    <p>
+      This Privacy Policy explains how <strong>talisrae.li</strong> (the &ldquo;Website&rdquo;), the personal website of
+      Tal Israeli (&ldquo;I&rdquo;, &ldquo;me&rdquo; or &ldquo;my&rdquo;), handles information about you. The short
+      version: the Website has no accounts and no ads, and I do not sell your information. With your permission only, it
+      uses Google Analytics and Microsoft Clarity to understand how visitors use it.
+    </p>
+
+    <h2>1. Information Stored on Your Device</h2>
+    <p>
+      The Website saves two things in your browser's local storage: your theme (light or dark) and your cookie choice,
+      so they stay the same on your next visit. These values stay on your device and are never sent to me. The
+      accessibility widget can also save your accessibility settings, as described in section 3. You can remove all of
+      them at any time by clearing your browser's site data.
+    </p>
+
+    <h2 id="analytics">2. Analytics and Cookies</h2>
+    <p>
+      The Website uses two analytics services, but only if you allow them. Until you choose, and if you decline, neither
+      service is loaded and no analytics cookies are set. Each one can be allowed or declined on its own, and declining
+      does not affect how the Website works.
+    </p>
+    <p>
+      You can change or withdraw your choice at any time from{" "}
+      <button type="button" class="link" data-action="help-cookies">
+        Manage Cookies
+      </button>{" "}
+      (also in the footer and in the &ldquo;Help&rdquo; menu). When you withdraw a choice, the Website deletes that
+      service's cookies from your browser.
+    </p>
+
+    <h3>2.1. Google Analytics</h3>
+    <p>
+      Google Analytics, provided by Google LLC, helps me count visits and see which pages are read. When you allow it,
+      it collects:
+    </p>
+    <ul>
+      <li>the pages you visit, their titles, and the website or link that brought you here;</li>
+      <li>how you engage with pages, such as time spent, scrolling and clicks on links to other websites;</li>
+      <li>your device type, operating system, browser, screen size and language;</li>
+      <li>
+        your approximate location (country, region and city), derived from your IP address. For visitors from the EU,
+        the UK and Switzerland, Google uses the IP address only to derive this location and then discards it, without
+        logging or storing it;
+      </li>
+      <li>a random identifier, stored in the cookies below, that recognizes your browser between visits.</li>
+    </ul>
+    <p>
+      I have turned off Google signals and ad personalization, so this data is not linked to your Google account and is
+      not used for advertising. Event-level data is deleted automatically after 2 months; I keep only aggregated reports
+      after that.
+    </p>
+    <p>
+      Google Analytics may be loaded through Google Tag Manager, a Google tool that loads tags like Google Analytics on
+      the Website. Tag Manager is part of the same choice: it is loaded only if you allow Google Analytics, and it does
+      not set cookies of its own.
+    </p>
+    <table>
+      <caption>Google Analytics cookies (first-party, set on talisrae.li)</caption>
+      <thead>
+        <tr>
+          <th scope="col">Cookie</th>
+          <th scope="col">Purpose</th>
+          <th scope="col">Expires</th>
+        </tr>
+      </thead>
+      <tbody>
+        {googleAnalyticsCookies.map((cookie) => (
+          <tr>
+            <td>
+              <code>{cookie.name}</code>
+            </td>
+            <td>{cookie.purpose}</td>
+            <td>{cookie.expires}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <p>
+      Learn more in the{" "}
+      <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">
+        Google Privacy Policy
+      </a>{" "}
+      and{" "}
+      <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">
+        how Google uses information from sites that use its services
+      </a>
+      . You can also block Google Analytics on all websites with the{" "}
+      <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">
+        Google Analytics opt-out browser add-on
+      </a>
+      .
+    </p>
+
+    <h3>2.2. Microsoft Clarity</h3>
+    <p>
+      Microsoft Clarity, provided by Microsoft Corporation, shows me how pages are used through heatmaps and session
+      recordings. A recording is not a video: it is a reconstruction of the page from what you saw and what you did on
+      it. When you allow it, Clarity collects:
+    </p>
+    <ul>
+      <li>your interactions with pages, such as mouse movements, clicks, taps and scrolling;</li>
+      <li>
+        the content of the pages as they appeared to you (the Website has no forms, and text typed into input fields is
+        always masked);
+      </li>
+      <li>the pages you visit and the website or link that brought you here;</li>
+      <li>your device type, operating system, browser and screen size;</li>
+      <li>your approximate location (country), derived from your IP address;</li>
+      <li>a random identifier, stored in the cookies below, that recognizes your browser between visits.</li>
+    </ul>
+    <p>
+      Session recordings are kept for up to 30 days, except for a small number that I or Clarity save, which are kept
+      for up to 9 months. Heatmaps are available for up to 9 months. Clarity's data is stored in Microsoft Azure,
+      Microsoft acts as an independent controller of it, and Microsoft does not sell it. Clarity respects the Global
+      Privacy Control (GPC) signal. The Website allows Clarity analytics storage only; Microsoft advertising storage
+      stays denied.
+    </p>
+    <table>
+      <caption>Microsoft Clarity cookies</caption>
+      <thead>
+        <tr>
+          <th scope="col">Cookie</th>
+          <th scope="col">Type</th>
+          <th scope="col">Purpose</th>
+          <th scope="col">Expires</th>
+        </tr>
+      </thead>
+      <tbody>
+        {clarityCookies.map((cookie) => (
+          <tr>
+            <td>
+              <code>{cookie.name}</code>
+            </td>
+            <td>{cookie.party}</td>
+            <td>{cookie.purpose}</td>
+            <td>{cookie.expires}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <p>
+      Learn more in the{" "}
+      <a href="https://privacy.microsoft.com/privacystatement" target="_blank" rel="noopener">
+        Microsoft Privacy Statement
+      </a>
+      .
+    </p>
+
+    <h2 id="accessibility">3. Accessibility Widget</h2>
+    <p>
+      To make the Website accessible, it includes an accessibility widget provided by Negishot (negishot.co.il). It lets
+      you adjust things like text size, spacing, colors and contrast. Because it is needed for accessibility, it is
+      loaded on every page and does not depend on your cookie choice.
+    </p>
+    <ul>
+      <li>
+        Loading the widget sends Negishot the standard technical information of any web request, such as your IP
+        address, browser type and the page you are on.
+      </li>
+      <li>
+        When you open the widget, it loads its fonts from Google Fonts, jsDelivr and getmood.io, which receive the same
+        kind of technical information.
+      </li>
+      <li>
+        When you use one of its tools, it sends Negishot which tool you used, together with a random session ID, for
+        usage statistics. It does not send the content of the pages or anything you type.
+      </li>
+      <li>
+        When you change a setting, it saves your settings on your device, so they stay the same on your next visit.
+      </li>
+    </ul>
+    <table>
+      <caption>Accessibility widget storage</caption>
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Type</th>
+          <th scope="col">Purpose</th>
+          <th scope="col">Expires</th>
+        </tr>
+      </thead>
+      <tbody>
+        {accessibilityStorage.map((item) => (
+          <tr>
+            <td>
+              <code>{item.name}</code>
+            </td>
+            <td>{item.type}</td>
+            <td>{item.purpose}</td>
+            <td>{item.expires}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <p>
+      The widget does not use this information for advertising or to track you across websites. To reset your settings,
+      use the widget's reset option or clear your browser's site data. For more information, see{" "}
+      <a href="https://negishot.co.il" target="_blank" rel="noopener">
+        negishot.co.il
+      </a>
+      .
+    </p>
+
+    <h2>4. Hosting and Server Logs</h2>
+    <p>
+      The Website is hosted on Microsoft Azure Static Web Apps. Like most web hosts, Microsoft may automatically process
+      technical information when your browser requests a page, such as your IP address, browser type, the page requested
+      and the time of the request, in order to deliver the Website and keep it secure. I do not use this information to
+      identify you. Microsoft handles it according to the{" "}
+      <a href="https://privacy.microsoft.com/privacystatement" target="_blank" rel="noopener">
+        Microsoft Privacy Statement
+      </a>
+      .
+    </p>
+
+    <h2>5. When You Contact Me</h2>
+    <p>
+      If you email me or reach out through LinkedIn, GitHub or X, I will receive the information you choose to send,
+      such as your name, email address and message. I use it only to reply to you and continue our conversation, and I
+      keep it only as long as needed for that purpose.
+    </p>
+
+    <h2>6. Third-Party Websites</h2>
+    <p>
+      The Website links to other websites, including LinkedIn, GitHub, X, Facebook, WhatsApp and the sources cited in my
+      projects. The options in the &ldquo;Share&rdquo; and &ldquo;Connect&rdquo; menus simply open those websites in a
+      new tab; nothing is sent to them until you open them. Once you do, their own privacy policies apply, and I am not
+      responsible for how they handle your information.
+    </p>
+
+    <h2>7. Legal Basis and International Transfers</h2>
+    <p>
+      I use Google Analytics and Microsoft Clarity only on the basis of your consent, which you can withdraw at any time
+      without affecting the lawfulness of what was collected before. The accessibility widget is used because it is
+      necessary to make the Website accessible to everyone, and it stores your settings only when you ask it to. Google
+      and Microsoft may process this data in the United States and other countries where they operate, under the
+      safeguards described in their privacy policies.
+    </p>
+
+    <h2>8. Children's Privacy</h2>
+    <p>
+      The Website is not directed at children, and I do not knowingly collect personal information from anyone under the
+      age of 16.
+    </p>
+
+    <h2>9. Your Rights</h2>
+    <p>
+      Depending on where you live, you may have the right to access, correct or delete personal information about you,
+      to object to how it is used, and to complain to a data protection authority. You can withdraw your analytics
+      consent at any time from Manage Cookies. Analytics data is identified only by a random ID in your browser, so I
+      usually cannot link it to you; to make any other request, email me at the address below and I will respond within
+      a reasonable time.
+    </p>
+
+    <h2>10. Changes to This Policy</h2>
+    <p>
+      I may update this Privacy Policy from time to time, for example if the Website gains new features. The updated
+      version will be posted on this page with a new &ldquo;Last updated&rdquo; date. If I add a new analytics service,
+      I will ask for your permission again.
+    </p>
+
+    <h2>11. Contact</h2>
+    <p>
+      If you have any questions about this Privacy Policy, please email me at{" "}
+      <a href="mailto:contact@talisrae.li">contact@talisrae.li</a>. See also the{" "}
+      <a href="/terms-of-service">Terms of Service</a>.
+    </p>
+  </fieldset>
+</Layout>
+
+<style lang="scss">
+  .updated {
+    font-size: 0.9rem;
+    font-style: italic;
+  }
+
+  h2 {
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 1rem 0 0.25rem;
+  }
+
+  h3 {
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin: 0.75rem 0 0.25rem;
+  }
+
+  fieldset p {
+    margin: 0.25rem 0 0;
+  }
+
+  ul {
+    line-height: 1.6;
+    margin: 0.25rem 0 0;
+    padding-inline-start: 1.25rem;
+  }
+
+  button.link {
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--link-color);
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  // Like the tables on the Education page.
+  table {
+    width: 100%;
+    margin-block-start: 0.5rem;
+    border-collapse: collapse;
+    border: var(--window-border) 1px solid;
+    font-size: 0.85rem;
+
+    caption {
+      text-align: start;
+      font-weight: 500;
+      padding-block-end: 0.25rem;
+    }
+
+    th,
+    td {
+      padding: 0.2rem 0.5rem;
+      border: var(--window-border) 1px solid;
+      text-align: start;
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--tab-button-inactive-bg);
+      font-weight: 500;
+    }
+
+    code {
+      white-space: nowrap;
+    }
+  }
+</style>

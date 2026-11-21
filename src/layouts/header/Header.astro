@@ -93,9 +93,9 @@ import { menuBarData } from "./menuBarData";
     "connect-github": () => window.open("https://github.com/talisraeli", "_blank"),
     "connect-x": () => window.open("https://x.com/talisraeli_", "_blank"),
 
-    "help-terms": () => {},
-    "help-privacy": () => {},
-    "help-cookies": () => {},
+    "help-terms": () => (window.location.href = "/terms-of-service"),
+    "help-privacy": () => (window.location.href = "/privacy-policy"),
+    "help-cookies": () => (document.getElementById("cookies-dialog") as HTMLDialogElement)?.showModal(),
     "help-github": () => window.open("https://github.com/talisraeli/talisrae.li", "_blank"),
     "help-shortcuts": () => (document.getElementById("shortcuts-dialog") as HTMLDialogElement)?.showModal(),
     "help-about": () => (document.getElementById("about-dialog") as HTMLDialogElement)?.showModal(),
