@@ -1,4 +1,4 @@
-import { PUBLIC_CLARITY_PROJECT_ID, PUBLIC_GA_MEASUREMENT_ID } from "astro:env/client";
+import { PUBLIC_CLARITY_PROJECT_ID, PUBLIC_GA_MEASUREMENT_ID, PUBLIC_GTM_CONTAINER_ID } from "astro:env/client";
 
 /** The optional analytics providers a visitor can allow or decline, each on its own. */
 export interface Consent {
@@ -15,7 +15,9 @@ interface StoredConsent extends Consent {
 const CONSENT_VERSION = 1;
 const STORAGE_KEY = "cookie-consent";
 
-export const isAnalyticsConfigured = Boolean(PUBLIC_GA_MEASUREMENT_ID || PUBLIC_CLARITY_PROJECT_ID);
+export const isAnalyticsConfigured = Boolean(
+  PUBLIC_GA_MEASUREMENT_ID || PUBLIC_GTM_CONTAINER_ID || PUBLIC_CLARITY_PROJECT_ID,
+);
 
 /** The visitor's saved choice, or null when they have not chosen yet (or chose under an older version). */
 export function getConsent(): Consent | null {
@@ -56,7 +58,10 @@ export function setConsent(consent: Consent) {
 
 /** Loads the providers the visitor allowed. Safe to call more than once. */
 export function applyConsent(consent: Consent) {
-  if (consent.googleAnalytics) loadGoogleAnalytics();
+  if (consent.googleAnalytics) {
+    loadGoogleAnalytics();
+    loadGoogleTagManager();
+  }
   if (consent.clarity) loadClarity();
 }
 
@@ -75,28 +80,50 @@ function loadScript(src: string) {
   document.head.appendChild(script);
 }
 
-function loadGoogleAnalytics() {
-  if (!PUBLIC_GA_MEASUREMENT_ID || window.gtag) return;
+let googleAnalyticsLoaded = false;
+let googleTagManagerLoaded = false;
+
+/** Sets up the shared Google data layer once, with analytics allowed and advertising denied (Consent Mode). */
+function setUpGoogleDataLayer() {
+  if (window.gtag) return window.gtag;
 
   window.dataLayer = window.dataLayer || [];
   window.gtag = function () {
-    // gtag.js expects the `arguments` object itself, not an array.
+    // gtag.js and Tag Manager expect the `arguments` object itself, not an array.
     // eslint-disable-next-line prefer-rest-params
     window.dataLayer!.push(arguments);
   };
-  // Analytics only: advertising storage and signals stay denied.
   window.gtag("consent", "default", {
     analytics_storage: "granted",
     ad_storage: "denied",
     ad_user_data: "denied",
     ad_personalization: "denied",
   });
-  window.gtag("js", new Date());
-  window.gtag("config", PUBLIC_GA_MEASUREMENT_ID, {
+  return window.gtag;
+}
+
+function loadGoogleAnalytics() {
+  if (!PUBLIC_GA_MEASUREMENT_ID || googleAnalyticsLoaded) return;
+  googleAnalyticsLoaded = true;
+
+  const gtag = setUpGoogleDataLayer();
+  gtag("js", new Date());
+  gtag("config", PUBLIC_GA_MEASUREMENT_ID, {
     allow_google_signals: false,
     allow_ad_personalization_signals: false,
   });
   loadScript(`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(PUBLIC_GA_MEASUREMENT_ID)}`);
+}
+
+/** Tag Manager is part of the Google Analytics choice, so its tags only ever run with that consent. */
+function loadGoogleTagManager() {
+  if (!PUBLIC_GTM_CONTAINER_ID || googleTagManagerLoaded) return;
+  googleTagManagerLoaded = true;
+
+  setUpGoogleDataLayer();
+  // The start event that Tag Manager's page-view triggers fire on.
+  window.dataLayer!.push({ "gtm.start": Date.now(), event: "gtm.js" });
+  loadScript(`https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(PUBLIC_GTM_CONTAINER_ID)}`);
 }
 
 function loadClarity() {
