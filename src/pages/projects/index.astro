@@ -68,8 +68,9 @@ const projects = (await getCollection("projects")).sort((a, b) => b.data.period.
 
   .project {
     display: flex;
+    flex-direction: row-reverse;
     align-items: center;
-    gap: 1rem;
+    gap: 1rem 2rem;
 
     :global(img) {
       flex-shrink: 0;
