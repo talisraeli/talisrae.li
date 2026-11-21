@@ -1,0 +1,123 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+const lastUpdated = new Date("2026-11-21");
+---
+
+<Layout
+  title="Terms of Service — Tal Israeli"
+  description="The terms that apply when you visit and use Tal Israeli's personal website, talisrae.li."
+>
+  <fieldset>
+    <legend>Terms of Service</legend>
+    <p class="updated">
+      Last updated:{" "}
+      <time datetime={lastUpdated.toISOString().slice(0, 10)}>
+        {lastUpdated.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })}
+      </time>
+    </p>
+
+    <p>
+      Welcome to <strong>talisrae.li</strong> (the &ldquo;Website&rdquo;), the personal website of Tal Israeli
+      (&ldquo;I&rdquo;, &ldquo;me&rdquo; or &ldquo;my&rdquo;). By visiting or using the Website, you agree to these
+      Terms of Service. If you do not agree, please do not use the Website.
+    </p>
+
+    <h2>1. About the Website</h2>
+    <p>
+      The Website is a personal portfolio. It presents information about me, my education and my projects, and ways to
+      get in touch with me. It does not offer any products or paid services, and you do not need an account to use it.
+    </p>
+
+    <h2>2. Acceptable Use</h2>
+    <p>You agree to use the Website only for lawful purposes. In particular, you agree not to:</p>
+    <ul>
+      <li>attempt to gain unauthorized access to the Website or the systems that host it;</li>
+      <li>interfere with or disrupt the Website, for example by overloading it with automated requests;</li>
+      <li>use the Website or its content to mislead others, or to impersonate me or anyone else.</li>
+    </ul>
+
+    <h2>3. Intellectual Property</h2>
+    <p>
+      Unless stated otherwise, the content of the Website, including its text, images, design and logos, is owned by me
+      or used with permission, and is protected by copyright and other laws. You may view and share links to the
+      Website, and quote short excerpts with attribution, for personal and non-commercial purposes. Any other use
+      requires my prior written permission.
+    </p>
+    <p>
+      Logos and trademarks of third parties, such as academic institutions, belong to their respective owners and are
+      shown only to identify them. The Website's source code is publicly visible on GitHub; that visibility does not by
+      itself grant a license to reuse it, except as stated in the repository.
+    </p>
+
+    <h2>4. Third-Party Links</h2>
+    <p>
+      The Website links to third-party websites and services, such as LinkedIn, GitHub, X and the sharing options in the
+      &ldquo;Share&rdquo; menu. I do not control those websites and am not responsible for their content, policies or
+      practices. Your use of them is governed by their own terms.
+    </p>
+
+    <h2>5. No Warranties</h2>
+    <p>
+      The Website and its content are provided &ldquo;as is&rdquo; and &ldquo;as available&rdquo;, for general
+      information only. I try to keep everything accurate and up to date, but I make no warranties of any kind, express
+      or implied, about the Website's accuracy, completeness or availability. Nothing on the Website is professional
+      advice.
+    </p>
+
+    <h2>6. Limitation of Liability</h2>
+    <p>
+      To the fullest extent permitted by law, I will not be liable for any direct, indirect, incidental or consequential
+      damages arising from your use of, or inability to use, the Website or any content or third-party website linked
+      from it.
+    </p>
+
+    <h2>7. Privacy</h2>
+    <p>
+      With your permission only, the Website uses Google Analytics and Microsoft Clarity to understand how visitors use
+      it. How your information is handled, and how to change your choice, is explained in the{" "}
+      <a href="/privacy-policy">Privacy Policy</a>.
+    </p>
+
+    <h2>8. Changes to These Terms</h2>
+    <p>
+      I may update these Terms from time to time. The updated version will be posted on this page with a new &ldquo;Last
+      updated&rdquo; date. Your continued use of the Website after a change means you accept the updated Terms.
+    </p>
+
+    <h2>9. Governing Law</h2>
+    <p>
+      These Terms are governed by the laws of the State of Israel. Any dispute arising from them or from your use of the
+      Website will be subject to the exclusive jurisdiction of the competent courts in Haifa, Israel.
+    </p>
+
+    <h2>10. Contact</h2>
+    <p>
+      If you have any questions about these Terms, please email me at{" "}
+      <a href="mailto:contact@talisrae.li">contact@talisrae.li</a>.
+    </p>
+  </fieldset>
+</Layout>
+
+<style lang="scss">
+  .updated {
+    font-size: 0.9rem;
+    font-style: italic;
+  }
+
+  h2 {
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 1rem 0 0.25rem;
+  }
+
+  ul {
+    line-height: 1.6;
+    margin: 0.25rem 0 0;
+    padding-inline-start: 1.25rem;
+  }
+
+  fieldset p {
+    margin: 0.25rem 0 0;
+  }
+</style>
