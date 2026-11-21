@@ -69,7 +69,7 @@ export const menuBarData: MenuBarItemData[] = [
     shortcutKey: "h",
     underlineIndex: 0,
     items: [
-      { name: "Terms of Services", action: "help-terms", underlineIndex: 0 },
+      { name: "Terms of Service", action: "help-terms", underlineIndex: 0 },
       { name: "Privacy Policy", action: "help-privacy", underlineIndex: 0 },
       { name: "Manage Cookies", action: "help-cookies", underlineIndex: 0 },
       "Divider",
