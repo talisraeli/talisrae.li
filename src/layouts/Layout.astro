@@ -5,6 +5,7 @@ import Footer from "./Footer.astro";
 import CookieConsent from "../components/cookies/CookieConsent.astro";
 import { Tabs } from "./tabs/tabs.ts";
 import { getImage } from "astro:assets";
+import { PUBLIC_NEGISHOT_WIDGET_CODE } from "astro:env/client";
 import profile from "../assets/profile.jpg";
 
 // Pages outside the tabs (like the Terms of Service) leave activeTab out and pass their own title and description.
@@ -87,6 +88,12 @@ const ogImage = await getImage({ src: profile, width: 600, format: "jpg" });
       <Footer />
     </div>
     <CookieConsent />
+    {PUBLIC_NEGISHOT_WIDGET_CODE && (
+      <script
+        is:inline
+        src={`https://negishot.co.il/cdn/widget.php?code=${encodeURIComponent(PUBLIC_NEGISHOT_WIDGET_CODE)}`}
+      />
+    )}
   </body>
 </html>
 

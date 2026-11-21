@@ -39,6 +39,7 @@ jobs:
           # Set these as repository variables (Settings > Secrets and variables > Actions > Variables).
           PUBLIC_GA_MEASUREMENT_ID: ${{ vars.GA_MEASUREMENT_ID }}
           PUBLIC_CLARITY_PROJECT_ID: ${{ vars.CLARITY_PROJECT_ID }}
+          PUBLIC_NEGISHOT_WIDGET_CODE: ${{ vars.NEGISHOT_WIDGET_CODE }}
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_JOLLY_COAST_05B827F03 }}
           action: "upload"

@@ -14,6 +14,8 @@ export default defineConfig({
       // Analytics IDs are public (they end up in the page), so they're client variables. Leave unset to disable them.
       PUBLIC_GA_MEASUREMENT_ID: envField.string({ context: "client", access: "public", optional: true }),
       PUBLIC_CLARITY_PROJECT_ID: envField.string({ context: "client", access: "public", optional: true }),
+      // The Negishot accessibility widget's code. Leave unset to disable the widget.
+      PUBLIC_NEGISHOT_WIDGET_CODE: envField.string({ context: "client", access: "public", optional: true }),
     },
   },
   integrations: [mdx({ processor: satteri({ features: { smartPunctuation: false } }) })],
